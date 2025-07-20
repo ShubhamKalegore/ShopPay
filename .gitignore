@@ -1,0 +1,13 @@
+# Ignore Visual Studio and .NET build files
+.vs/
+bin/
+obj/
+
+# Ignore Node.js and Angular files
+node_modules/
+dist/
+.angular/
+
+# OS-specific
+Thumbs.db
+*.DS_Store

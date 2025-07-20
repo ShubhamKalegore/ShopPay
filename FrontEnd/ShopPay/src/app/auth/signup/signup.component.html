@@ -1,0 +1,224 @@
+<div class="signup-container">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+      <h2>Sign Up</h2>
+  
+      <!-- Feedback Messages -->
+      <div class="alert alert-success" *ngIf="successMessage" role="alert">
+        {{ successMessage }}
+      </div>
+      <div class="alert alert-error" *ngIf="errorMessage" role="alert">
+        {{ errorMessage }}
+      </div>
+  
+      <!-- Step 1: User Info and Password -->
+      <div *ngIf="!showAddressForm">
+        <!-- First Name -->
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            id="firstName"
+            formControlName="firstName"
+            type="text"
+            placeholder="Enter first name"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('firstName')?.invalid && (signupForm.get('firstName')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('firstName')?.invalid && (signupForm.get('firstName')?.touched || submitted)">
+            <span *ngIf="signupForm.get('firstName')?.errors?.['required']">First Name is required.</span>
+            <span *ngIf="signupForm.get('firstName')?.errors?.['minlength']">First Name must be at least 3 characters.</span>
+          </div>
+        </div>
+  
+        <!-- Last Name -->
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            formControlName="lastName"
+            type="text"
+            placeholder="Enter last name"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('lastName')?.invalid && (signupForm.get('lastName')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('lastName')?.invalid && (signupForm.get('lastName')?.touched || submitted)">
+            <span *ngIf="signupForm.get('lastName')?.errors?.['required']">Last Name is required.</span>
+            <span *ngIf="signupForm.get('lastName')?.errors?.['minlength']">Last Name must be at least 3 characters.</span>
+          </div>
+        </div>
+  
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            placeholder="Enter email"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('email')?.invalid && (signupForm.get('email')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.touched || submitted)">
+            <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
+          </div>
+        </div>
+  
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            formControlName="password"
+            type="password"
+            placeholder="Enter password"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('password')?.invalid && (signupForm.get('password')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.touched || submitted)">
+            <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required.</span>
+            <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters.</span>
+          </div>
+        </div>
+  
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="Confirm password"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('confirmPassword')?.invalid && (signupForm.get('confirmPassword')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('confirmPassword')?.invalid && (signupForm.get('confirmPassword')?.touched || submitted)">
+            <span *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">Please confirm your password.</span>
+            <span *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched">Passwords do not match.</span>
+          </div>
+        </div>
+  
+        <div class="button-wrapper">
+            <button type="button" class="next-button" (click)="onNext()">Next</button>
+          </div>        
+        </div>
+  
+      <!-- Step 2: Address Info -->
+      <div *ngIf="showAddressForm">
+        <h3 class="section-title">Address Information</h3>
+        <!-- Address Type -->
+        <div class="form-group">
+          <label for="address_type">Address Type</label>
+          <select id="address_type" formControlName="address_type" aria-required="true">
+            <option value="" disabled>Select address type</option>
+            <option value="home">Home</option>
+            <option value="work">Work</option>
+          </select>
+          <div class="error-message" *ngIf="signupForm.get('address_type')?.invalid && (signupForm.get('address_type')?.touched || submitted)">
+            Address type is required.
+          </div>
+        </div>
+  
+        <!-- Street -->
+        <div class="form-group">
+          <label for="street">Street</label>
+          <input
+            id="street"
+            formControlName="street"
+            type="text"
+            placeholder="Street"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('street')?.invalid && (signupForm.get('street')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('street')?.invalid && (signupForm.get('street')?.touched || submitted)">
+            Street is required.
+          </div>
+        </div>
+  
+        <!-- City -->
+        <div class="form-group">
+          <label for="city">City</label>
+          <input
+            id="city"
+            formControlName="city"
+            type="text"
+            placeholder="City"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('city')?.invalid && (signupForm.get('city')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('city')?.invalid && (signupForm.get('city')?.touched || submitted)">
+            City is required.
+          </div>
+        </div>
+  
+        <!-- State -->
+        <div class="form-group">
+          <label for="state">State</label>
+          <input
+            id="state"
+            formControlName="state"
+            type="text"
+            placeholder="State"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('state')?.invalid && (signupForm.get('state')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('state')?.invalid && (signupForm.get('state')?.touched || submitted)">
+            State is required.
+          </div>
+        </div>
+  
+        <!-- Postal Code -->
+        <div class="form-group">
+          <label for="postal_code">Postal Code</label>
+          <input
+            id="postal_code"
+            formControlName="postal_code"
+            type="text"
+            placeholder="Postal Code"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('postal_code')?.invalid && (signupForm.get('postal_code')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('postal_code')?.invalid && (signupForm.get('postal_code')?.touched || submitted)">
+            <span *ngIf="signupForm.get('postal_code')?.errors?.['required']">Postal code is required.</span>
+            <span *ngIf="signupForm.get('postal_code')?.errors?.['pattern']">Please enter a valid postal code.</span>
+          </div>
+        </div>
+  
+        <!-- Country -->
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input
+            id="country"
+            formControlName="country"
+            type="text"
+            placeholder="Country"
+            aria-required="true"
+            [attr.aria-invalid]="signupForm.get('country')?.invalid && (signupForm.get('country')?.touched || submitted)"
+          >
+          <div class="error-message" *ngIf="signupForm.get('country')?.invalid && (signupForm.get('country')?.touched || submitted)">
+            Country is required.
+          </div>
+        </div>
+  
+        <!-- Default Address Checkbox -->
+        <div class="form-group checkbox">
+          <input
+            id="is_default"
+            type="checkbox"
+            formControlName="is_default"
+            aria-label="Set as default address"
+          >
+          <label for="is_default">Set as default address</label>
+        </div>
+  
+        <button
+          type="submit"
+          [disabled]="signupForm.invalid || signupForm.pending"
+          [ngClass]="{'loading': signupForm.pending}"
+        >
+          <span *ngIf="!signupForm.pending">Register</span>
+          <span *ngIf="signupForm.pending">Registering...</span>
+        </button>
+      </div>
+      </form>
+  </div>
+  
