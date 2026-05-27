@@ -3,7 +3,7 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "ShopPay\\ShopPay.csproj",
+        "Path": "ShopPay.API\\ShopPay.API.csproj",
         "Action": "Start"
       }
     ]

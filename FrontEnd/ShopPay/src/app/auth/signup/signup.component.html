@@ -212,11 +212,11 @@
   
         <button
           type="submit"
-          [disabled]="signupForm.invalid || signupForm.pending"
-          [ngClass]="{'loading': signupForm.pending}"
+          [disabled]="signupForm.invalid || isSubmitting"
+          [ngClass]="{'loading': isSubmitting}"
         >
-          <span *ngIf="!signupForm.pending">Register</span>
-          <span *ngIf="signupForm.pending">Registering...</span>
+          <span *ngIf="!isSubmitting">Register</span>
+          <span *ngIf="isSubmitting">Registering...</span>
         </button>
       </div>
       </form>

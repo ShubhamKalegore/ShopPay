@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,8 +18,10 @@ export class SignupComponent {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   showAddressForm = false; // <-- New flag to toggle form steps
+  isSubmitting = false;
+  private readonly registerUrl = 'https://localhost:9000/api/users/register';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.signupForm = this.fb.group(
       {
         firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -75,8 +79,29 @@ export class SignupComponent {
     this.errorMessage = null;
 
     if (this.signupForm.valid) {
-      console.log(this.signupForm.value);
-      this.successMessage = 'Registration successful!';
+      const formValue = this.signupForm.value;
+      const payload = {
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        email: formValue.email,
+        password: formValue.password
+      };
+
+      this.isSubmitting = true;
+      this.http.post(this.registerUrl, payload).subscribe({
+        next: () => {
+          this.successMessage = 'Registration successful!';
+          this.signupForm.reset({ is_default: false });
+          this.showAddressForm = false;
+          this.submitted = false;
+          this.isSubmitting = false;
+          this.router.navigate(['/login']);
+        },
+        error: () => {
+          this.errorMessage = 'Registration failed. Please check the backend and try again.';
+          this.isSubmitting = false;
+        }
+      });
     } else {
       this.errorMessage = 'Please fill out all required fields correctly.';
       this.signupForm.markAllAsTouched();
