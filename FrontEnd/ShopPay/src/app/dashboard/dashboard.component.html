@@ -1,0 +1,94 @@
+<main class="dashboard-shell">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <a class="brand" routerLink="/dashboard">
+      <span class="brand-mark">S</span>
+      <span>ShopPay</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="active" routerLink="/dashboard">Dashboard</a>
+      <a href="#">Orders</a>
+      <a href="#">Wallet</a>
+      <a href="#">Customers</a>
+      <a href="#">Settings</a>
+    </div>
+  </nav>
+
+  <section class="main-panel">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Dashboard</p>
+        <h1>Welcome, {{ displayName }}</h1>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-button" type="button" aria-label="Notifications">
+          <span class="bell" aria-hidden="true"></span>
+          <span class="notification-dot" aria-hidden="true"></span>
+        </button>
+        <button class="logout-button" type="button" (click)="logout()">Log Out</button>
+      </div>
+    </header>
+
+    <section class="stats-grid" aria-label="Business overview">
+      <article class="stat-card">
+        <span>Total Balance</span>
+        <strong>$24,850</strong>
+        <small>+12.4% this month</small>
+      </article>
+      <article class="stat-card">
+        <span>Orders</span>
+        <strong>1,284</strong>
+        <small>86 pending review</small>
+      </article>
+      <article class="stat-card">
+        <span>Payments</span>
+        <strong>98.7%</strong>
+        <small>Successful transactions</small>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="activity-panel">
+        <div class="section-heading">
+          <h2>Recent Activity</h2>
+          <a href="#">View all</a>
+        </div>
+
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-icon paid"></span>
+            <div>
+              <strong>Payment received</strong>
+              <p>Order #SP-2048 completed successfully.</p>
+            </div>
+            <span>$420</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-icon review"></span>
+            <div>
+              <strong>New account created</strong>
+              <p>A customer joined from the signup page.</p>
+            </div>
+            <span>Today</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-icon payout"></span>
+            <div>
+              <strong>Payout scheduled</strong>
+              <p>Next merchant payout is ready for processing.</p>
+            </div>
+            <span>$1,240</span>
+          </div>
+        </div>
+      </article>
+
+      <aside class="summary-panel">
+        <h2>Quick Summary</h2>
+        <div class="progress-ring">76%</div>
+        <p>Monthly payment target is on track. Keep monitoring failed transactions and pending orders.</p>
+        <button type="button">Review Payments</button>
+      </aside>
+    </section>
+  </section>
+</main>

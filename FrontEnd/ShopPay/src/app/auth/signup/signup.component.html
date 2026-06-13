@@ -1,6 +1,10 @@
 <div class="signup-container">
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
       <h2>Sign Up</h2>
+      <p class="auth-switch">
+        Already have an account?
+        <a routerLink="/login">Log In</a>
+      </p>
   
       <!-- Feedback Messages -->
       <div class="alert alert-success" *ngIf="successMessage" role="alert">

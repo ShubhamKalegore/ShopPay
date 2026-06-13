@@ -1,1 +1,66 @@
-<p>login works!</p>
+<main class="login-page">
+  <section class="login-panel" aria-labelledby="login-title">
+    <div class="brand">
+      <span class="brand-mark">S</span>
+      <div>
+        <p class="eyebrow">Welcome back</p>
+        <h1 id="login-title">Log in to ShopPay</h1>
+      </div>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="alert alert-error" *ngIf="errorMessage" role="alert">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter email"
+          aria-required="true"
+          [attr.aria-invalid]="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)"
+        >
+        <div class="error-message" *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter password"
+          aria-required="true"
+          [attr.aria-invalid]="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)"
+        >
+        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)">
+          Password is required.
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="remember">
+          <input type="checkbox" formControlName="rememberMe">
+          <span>Remember me</span>
+        </label>
+        <a routerLink="/signup">Create account</a>
+      </div>
+
+      <button type="submit" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">Log In</span>
+        <span *ngIf="isSubmitting">Logging in...</span>
+      </button>
+    </form>
+
+    <p class="switch-auth">
+      Create new account?
+      <a routerLink="/signup">Sign Up</a>
+    </p>
+  </section>
+</main>

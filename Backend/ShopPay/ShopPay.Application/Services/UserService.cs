@@ -50,4 +50,19 @@ public class UserService : IUserService
 
         return _mapper.Map<UserDto>(user);
     }
+
+    public async Task<UserDto?> LoginUserAsync(LoginUserDto loginUserDto)
+    {
+        _logger.LogInformation("Login attempt for email {Email}", loginUserDto.Email);
+
+        var user = await _userRepository.GetByEmailAsync(loginUserDto.Email);
+
+        if (user is null || user.PasswordHash != loginUserDto.Password)
+        {
+            _logger.LogWarning("Invalid login attempt for email {Email}", loginUserDto.Email);
+            return null;
+        }
+
+        return _mapper.Map<UserDto>(user);
+    }
 }

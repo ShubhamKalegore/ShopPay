@@ -17,11 +17,28 @@
   
   .signup-container h2 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 8px;
     font-size: 28px; /* Larger heading */
     font-weight: 700; /* Bolder heading */
     color: #2c3e50; /* Darker color for contrast */
     letter-spacing: 1px; /* Subtle letter spacing */
+  }
+
+  .auth-switch {
+    margin: 0 0 28px;
+    text-align: center;
+    color: #52616f;
+    font-size: 14px;
+  }
+
+  .auth-switch a {
+    color: #0984e3;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .auth-switch a:hover {
+    text-decoration: underline;
   }
   
   .form-group {

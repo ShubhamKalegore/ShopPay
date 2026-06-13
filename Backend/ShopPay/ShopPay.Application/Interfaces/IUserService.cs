@@ -6,4 +6,5 @@ public interface IUserService
 {
     Task<List<UserDto>> GetAllUsersAsync();
     Task<UserDto> RegisterUserAsync(CreateUserDto createUserDto);
+    Task<UserDto?> LoginUserAsync(LoginUserDto loginUserDto);
 }

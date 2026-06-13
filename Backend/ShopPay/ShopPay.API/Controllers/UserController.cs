@@ -28,5 +28,18 @@ namespace ShopPay.API.Controllers
 			var user = await _userService.RegisterUserAsync(createUserDto);
 			return CreatedAtAction(nameof(GetUsers), new { id = user.UserId }, user);
 		}
+
+		[HttpPost("login")]
+		public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+		{
+			var user = await _userService.LoginUserAsync(loginUserDto);
+
+			if (user is null)
+			{
+				return Unauthorized(new { message = "Invalid email or password." });
+			}
+
+			return Ok(user);
+		}
 	}
 }
