@@ -17,22 +17,21 @@ export class SignupComponent {
   submitted = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
-  showAddressForm = false; // <-- New flag to toggle form steps
   isSubmitting = false;
   private readonly registerUrl = 'https://localhost:9001/api/users/register';
 
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.signupForm = this.fb.group(
-    {
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
-      lastName: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(4)]],
-      confirmPassword: ['', Validators.required]
-    },
-    {
-      validators: [this.passwordMatchValidator]
-    } as AbstractControlOptions
+      {
+        firstName: ['', [Validators.required, Validators.minLength(3)]],
+        lastName: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(4)]],
+        confirmPassword: ['', Validators.required]
+      },
+      {
+        validators: [this.passwordMatchValidator]
+      } as AbstractControlOptions
     );
   }
 

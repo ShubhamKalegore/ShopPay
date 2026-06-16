@@ -1,90 +1,90 @@
-    <form [formGroup]="addressForm" novalidate>
-        <div>
-            <h3 class="section-title">Address Information</h3>
+<form [formGroup]="addressForm" novalidate>
+    <div>
+        <h3 class="section-title">Address Information</h3>
 
-            <div class="form-group">
-                <label for="address_type">Address Type</label>
-                <select id="address_type" formControlName="address_type">
-                    <option value="" disabled>Select address type</option>
-                    <option value="home">Home</option>
-                    <option value="work">Work</option>
-                </select>
+        <div class="form-group">
+            <label for="address_type">Address Type</label>
+            <select id="address_type" formControlName="address_type">
+                <option value="" disabled>Select address type</option>
+                <option value="home">Home</option>
+                <option value="work">Work</option>
+            </select>
 
-                <div class="error-message" *ngIf="addressForm.get('address_type')?.invalid &&
+            <div class="error-message" *ngIf="addressForm.get('address_type')?.invalid &&
                 (addressForm.get('address_type')?.touched || submitted)">
-                    Address type is required.
-                </div>
+                Address type is required.
             </div>
-
-            <div class="form-group">
-                <label for="street">Street</label>
-                <input id="street" formControlName="street" type="text" placeholder="Street">
-
-                <div class="error-message" *ngIf="addressForm.get('street')?.invalid &&
-                (addressForm.get('street')?.touched || submitted)">
-                    Street is required.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="city">City</label>
-                <input id="city" formControlName="city" type="text" placeholder="City">
-
-                <div class="error-message" *ngIf="addressForm.get('city')?.invalid &&
-                (addressForm.get('city')?.touched || submitted)">
-                    City is required.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="state">State</label>
-                <input id="state" formControlName="state" type="text" placeholder="State">
-
-                <div class="error-message" *ngIf="addressForm.get('state')?.invalid &&
-                (addressForm.get('state')?.touched || submitted)">
-                    State is required.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="postal_code">Postal Code</label>
-                <input id="postal_code" formControlName="postal_code" type="text" placeholder="Postal Code">
-
-                <div class="error-message" *ngIf="addressForm.get('postal_code')?.invalid &&
-                (addressForm.get('postal_code')?.touched || submitted)">
-                    <span *ngIf="addressForm.get('postal_code')?.errors?.['required']">
-                        Postal code is required.
-                    </span>
-
-                    <span *ngIf="addressForm.get('postal_code')?.errors?.['pattern']">
-                        Please enter a valid postal code.
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="country">Country</label>
-                <input id="country" formControlName="country" type="text" placeholder="Country">
-
-                <div class="error-message" *ngIf="addressForm.get('country')?.invalid &&
-                (addressForm.get('country')?.touched || submitted)">
-                    Country is required.
-                </div>
-            </div>
-
-            <div class="form-group checkbox">
-                <input id="is_default" type="checkbox" formControlName="is_default">
-
-                <label for="is_default">
-                    Set as default address
-                </label>
-            </div>
-
-            <button type="button" (click)="onRegister()" [disabled]="addressForm.invalid || isSubmitting"
-                [ngClass]="{'loading': isSubmitting}">
-
-                <span *ngIf="!isSubmitting">Register</span>
-                <span *ngIf="isSubmitting">Registering...</span>
-            </button>
         </div>
-    </form>
+
+        <div class="form-group">
+            <label for="street">Street</label>
+            <input id="street" formControlName="street" type="text" placeholder="Street">
+
+            <div class="error-message" *ngIf="addressForm.get('street')?.invalid &&
+                (addressForm.get('street')?.touched || submitted)">
+                Street is required.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="city">City</label>
+            <input id="city" formControlName="city" type="text" placeholder="City">
+
+            <div class="error-message" *ngIf="addressForm.get('city')?.invalid &&
+                (addressForm.get('city')?.touched || submitted)">
+                City is required.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="state">State</label>
+            <input id="state" formControlName="state" type="text" placeholder="State">
+
+            <div class="error-message" *ngIf="addressForm.get('state')?.invalid &&
+                (addressForm.get('state')?.touched || submitted)">
+                State is required.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="postal_code">Postal Code</label>
+            <input id="postal_code" formControlName="postal_code" type="text" placeholder="Postal Code">
+
+            <div class="error-message" *ngIf="addressForm.get('postal_code')?.invalid &&
+                (addressForm.get('postal_code')?.touched || submitted)">
+                <span *ngIf="addressForm.get('postal_code')?.errors?.['required']">
+                    Postal code is required.
+                </span>
+
+                <span *ngIf="addressForm.get('postal_code')?.errors?.['pattern']">
+                    Please enter a valid postal code.
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input id="country" formControlName="country" type="text" placeholder="Country">
+
+            <div class="error-message" *ngIf="addressForm.get('country')?.invalid &&
+                (addressForm.get('country')?.touched || submitted)">
+                Country is required.
+            </div>
+        </div>
+
+        <div class="form-group checkbox">
+            <input id="is_default" type="checkbox" formControlName="is_default">
+
+            <label for="is_default">
+                Set as default address
+            </label>
+        </div>
+
+        <button type="button" (click)="onRegister()" [disabled]="addressForm.invalid || isSubmitting"
+            [ngClass]="{'loading': isSubmitting}">
+
+            <span *ngIf="!isSubmitting">Register</span>
+            <span *ngIf="isSubmitting">Registering...</span>
+        </button>
+    </div>
+</form>

@@ -15,15 +15,10 @@
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Enter email"
-          aria-required="true"
-          [attr.aria-invalid]="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)"
-        >
-        <div class="error-message" *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)">
+        <input id="email" type="email" formControlName="email" placeholder="Enter email" aria-required="true"
+          [attr.aria-invalid]="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)">
+        <div class="error-message"
+          *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)">
           <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
           <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
         </div>
@@ -31,15 +26,11 @@
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          placeholder="Enter password"
+        <input id="password" type="password" formControlName="password" placeholder="Enter password"
           aria-required="true"
-          [attr.aria-invalid]="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)"
-        >
-        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)">
+          [attr.aria-invalid]="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)">
+        <div class="error-message"
+          *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)">
           Password is required.
         </div>
       </div>
