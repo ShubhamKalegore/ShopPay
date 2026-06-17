@@ -93,6 +93,40 @@ This PL/SQL (Oracle) database schema supports an e-commerce payment module built
      - `amount_due`, `amount_paid`: Invoice amounts (non-negative).
      - `invoice_status`: 'OPEN', 'PAID', or 'VOID'.
      - `created_at`: Timestamp.
+    
+# JWT Authentication
+
+This project uses JWT authentication with HttpOnly cookies and refresh tokens.
+
+## Features
+
+* User Registration
+* User Login
+* JWT Access Token
+* Refresh Token Rotation
+* HttpOnly Cookie Storage
+* Secure Logout
+* Cookie-Based Authentication
+
+## Endpoints
+
+```http
+POST /api/users/register
+POST /api/users/login
+POST /api/users/refresh-token
+POST /api/users/logout
+```
+
+## Security
+
+* HttpOnly Cookies
+* Secure Cookies
+* JWT Bearer Authentication
+* Refresh Token Validation
+* Automatic Token Renewal
+
+Refresh tokens are stored in the database and rotated on every refresh request.
+
 
 ## Notes
 - **Total Tables**: 9
