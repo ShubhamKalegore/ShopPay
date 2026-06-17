@@ -27,4 +27,10 @@ public class User
 
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
+
+    [Column("refresh_token")]
+    public string RefreshToken { get; set; } = string.Empty;
+
+    [Column("refresh_token_expiry_time")]
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }
