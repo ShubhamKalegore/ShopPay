@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   isSubmitting = false;
   private readonly loginUrl = 'https://localhost:9001/api/users/login';
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -40,7 +41,7 @@ export class LoginComponent {
     };
 
     this.isSubmitting = true;
-    this.http.post(this.loginUrl, payload).subscribe({
+    this.authService.login(payload).subscribe({
       next: (user) => {
         localStorage.setItem('shopPayUser', JSON.stringify(user));
         this.isSubmitting = false;

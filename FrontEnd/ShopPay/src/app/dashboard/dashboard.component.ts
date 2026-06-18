@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,7 @@ export class DashboardComponent {
   user: any = null;
   private readonly isBrowser: boolean;
 
-  constructor(private router: Router, @Inject(PLATFORM_ID) platformId: object) {
+  constructor(private router: Router, @Inject(PLATFORM_ID) platformId: object, private authService: AuthService) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.user = this.getUser();
   }
@@ -24,11 +25,16 @@ export class DashboardComponent {
   }
 
   logout() {
-    if (this.isBrowser) {
-      localStorage.removeItem('shopPayUser');
-    }
-
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('shopPayUser');
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        localStorage.removeItem('shopPayUser');
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   private getUser() {
