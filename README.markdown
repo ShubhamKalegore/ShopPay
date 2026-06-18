@@ -94,21 +94,34 @@ This PL/SQL (Oracle) database schema supports an e-commerce payment module built
      - `invoice_status`: 'OPEN', 'PAID', or 'VOID'.
      - `created_at`: Timestamp.
     
-# JWT Authentication
+# JWT Authentication with HttpOnly Cookies
 
-This project uses JWT authentication with HttpOnly cookies and refresh tokens.
+This project implements secure JWT authentication using HttpOnly cookies and refresh tokens across Angular and ASP.NET Core.
 
 ## Features
 
+### Backend (.NET)
+
 * User Registration
 * User Login
-* JWT Access Token
-* Refresh Token Rotation
-* HttpOnly Cookie Storage
+* JWT Access Token Generation
+* Refresh Token Generation
+* Refresh Token Storage in Database
+* Token Refresh Endpoint
 * Secure Logout
-* Cookie-Based Authentication
+* JWT Bearer Authentication
+* Cookie-Based Authentication Middleware
 
-## Endpoints
+### Frontend (Angular)
+
+* Authentication Service
+* HTTP Interceptor
+* Route Guard Protection
+* Automatic Token Refresh Handling
+* Credential-Based Requests (`withCredentials`)
+* Secure Logout Integration
+
+## API Endpoints
 
 ```http
 POST /api/users/register
@@ -117,15 +130,16 @@ POST /api/users/refresh-token
 POST /api/users/logout
 ```
 
-## Security
+## Security Features
 
 * HttpOnly Cookies
 * Secure Cookies
-* JWT Bearer Authentication
+* SameSite Cookie Policy
 * Refresh Token Validation
 * Automatic Token Renewal
+* Cookie-Based JWT Authentication
 
-Refresh tokens are stored in the database and rotated on every refresh request.
+
 
 
 ## Notes
