@@ -19,6 +19,7 @@ public static class DependencyInjection
                 sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 
         return services;
