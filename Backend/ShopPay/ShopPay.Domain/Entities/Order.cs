@@ -33,7 +33,12 @@ public class Order
     [ForeignKey(nameof(UserId))]
     public User User { get; set; } = null!;
 
+    [ForeignKey(nameof(ShippingAddressId))]
+    public Address? ShippingAddress { get; set; }
+
+    [ForeignKey(nameof(BillingAddressId))]
+    public Address? BillingAddress { get; set; }
+
     public ICollection<OrderItem> OrderItems { get; set; }
         = new List<OrderItem>();
-
 }
