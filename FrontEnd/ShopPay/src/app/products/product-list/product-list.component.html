@@ -1,0 +1,45 @@
+<div class="p-6">
+    <h1 class="text-3xl font-bold mb-6">
+        Products
+    </h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+        @for(product of products; track product.productId) {
+
+        <div class="bg-white rounded-lg shadow border p-4 hover:shadow-lg transition">
+
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-semibold truncate">
+                    {{ product.name }}
+                </h2>
+
+                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">
+                    Stock: {{ product.stockQuantity }}
+                </span>
+            </div>
+
+            <p class="text-sm text-gray-600 h-12 overflow-hidden">
+                {{ product.description }}
+            </p>
+
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-xl font-bold text-green-600">
+                    ₹{{ product.price }}
+                </span>
+            </div>
+            <button (click)="addToCart(product)" [disabled]="isOutOfStock(product)"
+                class="mt-4 w-full py-2 rounded-md transition" [class.bg-green-600]="!isOutOfStock(product)"
+                [class.hover:bg-green-700]="!isOutOfStock(product)" [class.text-white]="!isOutOfStock(product)"
+                [class.bg-gray-400]="isOutOfStock(product)" [class.cursor-not-allowed]="isOutOfStock(product)">
+
+                {{ isOutOfStock(product) ? 'Out Of Stock' : 'Add To Cart' }}
+
+            </button>
+
+        </div>
+
+        }
+
+    </div>
+</div>

@@ -1,22 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
+import { CartService } from '../core/services/cart.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, OnDestroy{
   user: any = null;
   private readonly isBrowser: boolean;
+  cartCount = 0;
+  private cartSubscription?: Subscription;
 
-  constructor(private router: Router, @Inject(PLATFORM_ID) platformId: object, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) platformId: object,
+    private authService: AuthService,
+    private cartService: CartService
+  ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.user = this.getUser();
+  }
+
+  ngOnInit(): void {
+    this.cartSubscription =
+      this.cartService.cartItems$.subscribe(items => {
+        this.cartCount = items.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.cartSubscription?.unsubscribe();
   }
 
   get displayName() {
