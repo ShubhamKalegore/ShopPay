@@ -10,10 +10,12 @@ namespace ShopPay.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IAddressService _addressService;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IAddressService addressService)
     {
         _userService = userService;
+        _addressService = addressService;
     }
 
     [HttpGet]
@@ -51,6 +53,8 @@ public class UserController : ControllerBase
             });
         }
 
+        var userAddress = await _addressService.GetAddressByUserIdAsync(result.UserId);
+
         Response.Cookies.Append(
             "accessToken",
             result.AccessToken,
@@ -75,7 +79,9 @@ public class UserController : ControllerBase
 
         return Ok(new
         {
-            result.UserId
+            userId = result.UserId,
+            isAddressPresent = userAddress != null,
+            postalCode = userAddress?.PostalCode
         });
     }
 

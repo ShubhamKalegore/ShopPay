@@ -46,6 +46,21 @@ public class AddressService : IAddressService
 
         return _mapper.Map<AddressDto>(address);
     }
+    public async Task<AddressDto?> GetAddressByUserIdAsync(int userId)
+    {
+        _logger.LogInformation(
+            "Fetching address with userid {AddressId}",
+            userId);
+
+        var address =
+            await _addressRepository.GetAddressByUserIdAsync(userId);
+
+        if (address is null)
+            return null;
+
+        return _mapper.Map<AddressDto>(address);
+    }
+
 
     public async Task<AddressDto> CreateAddressAsync(
         AddressDto addressDto)

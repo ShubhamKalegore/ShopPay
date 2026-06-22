@@ -4,4 +4,5 @@ namespace ShopPay.Application.Interfaces;
 
 public interface IAddressRepository : IGenericRepository<Address, int>
 {
+    Task<Address?> GetAddressByUserIdAsync(int userId);
 }

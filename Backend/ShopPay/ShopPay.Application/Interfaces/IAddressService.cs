@@ -7,6 +7,7 @@ public interface IAddressService
     Task<List<AddressDto>> GetAllAddressesAsync();
 
     Task<AddressDto?> GetAddressByIdAsync(int id);
+    Task<AddressDto?> GetAddressByUserIdAsync(int userId);
 
     Task<AddressDto> CreateAddressAsync(AddressDto addressDto);
 
