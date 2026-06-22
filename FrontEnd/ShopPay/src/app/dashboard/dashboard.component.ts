@@ -5,10 +5,11 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { AuthService } from '../core/services/auth.service';
 import { CartService } from '../core/services/cart.service';
 import { Subscription } from 'rxjs';
+import { CartDrawerComponent } from '../cart/cart-drawer/cart-drawer.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, CartDrawerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -17,6 +18,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
   private readonly isBrowser: boolean;
   cartCount = 0;
   private cartSubscription?: Subscription;
+  isCartOpen = false;
 
   constructor(
     private router: Router,
@@ -67,5 +69,13 @@ export class DashboardComponent implements OnInit, OnDestroy{
 
     const storedUser = localStorage.getItem('shopPayUser');
     return storedUser ? JSON.parse(storedUser) : null;
+  }
+
+  toggleCart(): void {
+    this.isCartOpen = !this.isCartOpen;
+  }
+
+  closeCart(): void {
+    this.isCartOpen = false;
   }
 }

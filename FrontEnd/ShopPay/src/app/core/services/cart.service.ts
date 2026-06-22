@@ -33,7 +33,8 @@ export class CartService {
         productId: product.productId,
         name: product.name,
         price: product.price,
-        quantity: 1
+        quantity: 1,
+        stockQuantity: product.stockQuantity
       });
 
     }
@@ -69,5 +70,47 @@ export class CartService {
       (total, item) => total + (item.price * item.quantity),
       0
     );
+  }
+
+  increaseQuantity(productId: number): void {
+
+    const items = this.cartItems.value;
+
+    const item = items.find(
+      x => x.productId === productId
+    );
+
+    if (!item) {
+      return;
+    }
+
+    item.quantity++;
+
+    this.cartItems.next([...items]);
+  }
+
+  decreaseQuantity(productId: number): void {
+
+    const items = this.cartItems.value;
+
+    const item = items.find(
+      x => x.productId === productId
+    );
+
+    if (!item) {
+      return;
+    }
+
+    if (item.quantity > 1) {
+
+      item.quantity--;
+
+      this.cartItems.next([...items]);
+
+    } else {
+
+      this.removeFromCart(productId);
+
+    }
   }
 }

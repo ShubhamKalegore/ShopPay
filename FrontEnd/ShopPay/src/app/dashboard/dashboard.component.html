@@ -33,17 +33,21 @@
           <span class="bell" aria-hidden="true"></span>
           <span class="notification-dot" aria-hidden="true"></span>
         </button>
-        <button class="icon-button relative" type="button" aria-label="Cart">
-        
+        <button
+          class="icon-button relative"
+          type="button"
+          aria-label="Cart"
+          (click)="toggleCart()">
+
           🛒
-        
+
           @if(cartCount > 0) {
-          <span
-            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full min-w-5 h-5 flex items-center justify-center">
-            {{ cartCount }}
-          </span>
+            <span
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full min-w-5 h-5 flex items-center justify-center">
+              {{ cartCount }}
+            </span>
           }
-        
+
         </button>
         <button class="logout-button" type="button" (click)="logout()">Log Out</button>
       </div>
@@ -51,4 +55,23 @@
 
     <router-outlet></router-outlet>
   </section>
+  
 </main>
+
+@if(isCartOpen) {
+
+  <div
+    class="fixed inset-0 bg-black/30 z-40"
+    (click)="closeCart()">
+  </div>
+
+  <div
+    class="fixed top-0 right-0 h-full w-[420px] bg-white z-50 shadow-2xl overflow-y-auto">
+
+    <app-cart-drawer
+      (close)="closeCart()">
+    </app-cart-drawer>
+
+  </div>
+
+}
