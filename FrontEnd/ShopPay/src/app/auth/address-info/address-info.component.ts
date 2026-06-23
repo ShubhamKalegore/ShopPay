@@ -6,6 +6,7 @@ import {
     ReactiveFormsModule,
     Validators
 } from '@angular/forms';
+import { AddressService, CreateAddressPayload } from '../../core/services/address.service';
 
 @Component({
     selector: 'app-address-info',
@@ -18,10 +19,14 @@ export class AddressInfoComponent {
     addressForm: FormGroup;
     submitted = false;
     isSubmitting = false;
+    errorMessage: string | null = null;
 
     @Output() saveAddress = new EventEmitter<any>();
 
-    constructor(private fb: FormBuilder) {
+    constructor(
+        private fb: FormBuilder,
+        private addressService: AddressService
+    ) {
         this.addressForm = this.fb.group({
             address_type: ['', Validators.required],
             street: ['', Validators.required],
@@ -31,7 +36,7 @@ export class AddressInfoComponent {
                 '',
                 [
                     Validators.required,
-                    Validators.pattern(/^\d{5}(-\d{4})?$/)
+                    Validators.pattern(/^(\d{5}(-\d{4})?|\d{6})$/)
                 ]
             ],
             country: ['', Validators.required],
@@ -41,10 +46,46 @@ export class AddressInfoComponent {
 
     onRegister() {
         this.submitted = true;
+        this.errorMessage = null;
 
         if (this.addressForm.valid) {
-            this.saveAddress.emit(this.addressForm.value);
+            const userData = localStorage.getItem('shopPayUser');
+            const user = userData ? JSON.parse(userData) : null;
+
+            if (!user?.userId) {
+                this.errorMessage = 'Please log in before adding an address.';
+                return;
+            }
+
+            const formValue = this.addressForm.value;
+            const payload: CreateAddressPayload = {
+                userId: user.userId,
+                addressType: formValue.address_type,
+                street: formValue.street,
+                city: formValue.city,
+                state: formValue.state,
+                postalCode: formValue.postal_code,
+                country: formValue.country,
+                isDefault: formValue.is_default
+            };
+
+            this.isSubmitting = true;
+            this.addressService.createAddress(payload).subscribe({
+                next: (response) => {
+                    this.isSubmitting = false;
+                    this.saveAddress.emit({
+                        response,
+                        postalCode: payload.postalCode
+                    });
+                },
+                error: () => {
+                    this.isSubmitting = false;
+                    this.errorMessage = 'Unable to save address. Please try again.';
+                }
+            });
+
         } else {
+
             this.addressForm.markAllAsTouched();
         }
     }
