@@ -38,15 +38,7 @@ export class CartDrawerComponent implements OnInit {
       return;
     }
 
-    const userData = localStorage.getItem('shopPayUser');
-
-    if (userData) {
-
-      const user = JSON.parse(userData);
-
-      this.isAddressPresent = user.isAddressPresent;
-      this.postalCode = user.postalCode;
-    }
+    this.loadUserAddressState();
   }
 
   increaseQuantity(product: CartItem): void {
@@ -89,12 +81,16 @@ export class CartDrawerComponent implements OnInit {
 
     const userData = localStorage.getItem('shopPayUser');
     const user = userData ? JSON.parse(userData) : null;
+    const updatedUserFromAddress = savedAddress?.updatedUser;
     const postalCode = savedAddress?.response?.postalCode
       ?? savedAddress?.response?.postal_code
       ?? savedAddress?.postalCode
+      ?? updatedUserFromAddress?.postalCode
       ?? null;
 
-    if (user && postalCode) {
+    if (updatedUserFromAddress) {
+      this.setUserAddressState(updatedUserFromAddress);
+    } else if (user && postalCode) {
       const updatedUser = {
         ...user,
         isAddressPresent: true,
@@ -102,11 +98,30 @@ export class CartDrawerComponent implements OnInit {
       };
 
       localStorage.setItem('shopPayUser', JSON.stringify(updatedUser));
-      this.isAddressPresent = updatedUser.isAddressPresent;
-      this.postalCode = updatedUser.postalCode;
+      this.setUserAddressState(updatedUser);
     }
 
     this.closeAddressDialog();
+  }
+
+  private loadUserAddressState(): void {
+    const userData = localStorage.getItem('shopPayUser');
+
+    if (!userData) {
+      return;
+    }
+
+    this.setUserAddressState(JSON.parse(userData));
+  }
+
+  private setUserAddressState(user: any): void {
+    const postalCode = user?.postalCode
+      ?? user?.postal_code
+      ?? user?.PostalCode
+      ?? null;
+
+    this.postalCode = postalCode;
+    this.isAddressPresent = Boolean(user?.isAddressPresent || user?.IsAddressPresent || postalCode);
   }
 
   private get isBrowser(): boolean {

@@ -72,10 +72,18 @@ export class AddressInfoComponent {
             this.isSubmitting = true;
             this.addressService.createAddress(payload).subscribe({
                 next: (response) => {
+                    const updatedUser = {
+                        ...user,
+                        isAddressPresent: true,
+                        postalCode: payload.postalCode
+                    };
+
+                    localStorage.setItem('shopPayUser', JSON.stringify(updatedUser));
                     this.isSubmitting = false;
                     this.saveAddress.emit({
                         response,
-                        postalCode: payload.postalCode
+                        postalCode: payload.postalCode,
+                        updatedUser
                     });
                 },
                 error: () => {
