@@ -13,5 +13,6 @@ public class MapperProfile : Profile
         CreateMap<Address, AddressDto>().ReverseMap();
         CreateMap<Order, OrderDto>().ReverseMap();
         CreateMap<OrderItem, OrderItemDto>().ReverseMap();
+        CreateMap<StripeCustomer, StripeCustomerDto>().ReverseMap();
     }
 }

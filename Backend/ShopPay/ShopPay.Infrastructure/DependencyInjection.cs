@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        services.AddScoped<IStripeCustomerRepository, StripeCustomerRepository>();
 
         return services;
     }

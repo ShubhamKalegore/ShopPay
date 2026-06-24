@@ -11,5 +11,5 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Address> Address => Set<Address>();
-
+    public DbSet<StripeCustomer> StripeCustomers { get; set; }
 }
