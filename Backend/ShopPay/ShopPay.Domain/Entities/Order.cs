@@ -41,4 +41,7 @@ public class Order
 
     public ICollection<OrderItem> OrderItems { get; set; }
         = new List<OrderItem>();
+
+    public ICollection<Billing> Billings { get; set; }
+    = new List<Billing>();  
 }

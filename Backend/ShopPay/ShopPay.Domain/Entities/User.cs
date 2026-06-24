@@ -43,4 +43,7 @@ public class User
         = new List<Order>();
 
     public StripeCustomer? StripeCustomer { get; set; }
+
+    public ICollection<Billing> Billings { get; set; }
+    = new List<Billing>();
 }
