@@ -46,4 +46,7 @@ public class User
 
     public ICollection<Billing> Billings { get; set; }
     = new List<Billing>();
+
+    public ICollection<Invoice> Invoices { get; set; }
+    = new List<Invoice>();
 }

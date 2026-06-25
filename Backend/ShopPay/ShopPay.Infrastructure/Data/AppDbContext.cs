@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<StripeCustomer> StripeCustomers { get; set; }
 
     public DbSet<Billing> Billings { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
 
     protected override void OnModelCreating(
     ModelBuilder modelBuilder)

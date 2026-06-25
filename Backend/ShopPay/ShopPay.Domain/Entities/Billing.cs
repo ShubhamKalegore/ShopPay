@@ -41,4 +41,7 @@ public class Billing
 
     [ForeignKey(nameof(OrderId))]
     public Order Order { get; set; } = null!;
+
+    public ICollection<Invoice> Invoices { get; set; }
+    = new List<Invoice>();
 }
