@@ -16,6 +16,6 @@ public class MapperProfile : Profile
         CreateMap<StripeCustomer, StripeCustomerDto>().ReverseMap();
         CreateMap<Billing, BillingDto > ().ReverseMap();
         CreateMap<Invoice, InvoiceDto>().ReverseMap();
-
+        CreateMap<Subscription, SubscriptionDto>().ReverseMap();
     }
 }

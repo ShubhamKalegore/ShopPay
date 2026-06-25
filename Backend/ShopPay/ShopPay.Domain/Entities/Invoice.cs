@@ -52,7 +52,6 @@ public class Invoice
     [ForeignKey(nameof(BillingId))]
     public Billing? Billing { get; set; }
 
-    // Will be added after Subscription entity
-    //[ForeignKey(nameof(SubscriptionId))]
-    //public Subscription? Subscription { get; set; }
+    [ForeignKey(nameof(SubscriptionId))]
+    public Subscription? Subscription { get; set; }
 }

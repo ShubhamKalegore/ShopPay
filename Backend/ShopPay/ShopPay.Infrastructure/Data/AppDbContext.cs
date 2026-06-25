@@ -15,6 +15,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Billing> Billings { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<Subscription> Subscriptions
+    => Set<Subscription>();
 
     protected override void OnModelCreating(
     ModelBuilder modelBuilder)
@@ -31,6 +33,18 @@ public class AppDbContext : DbContext
             .HasOne(x => x.Order)
             .WithMany(x => x.Billings)
             .HasForeignKey(x => x.OrderId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Subscription>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.Subscriptions)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Invoice>()
+            .HasOne(x => x.Subscription)
+            .WithMany(x => x.Invoices)
+            .HasForeignKey(x => x.SubscriptionId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

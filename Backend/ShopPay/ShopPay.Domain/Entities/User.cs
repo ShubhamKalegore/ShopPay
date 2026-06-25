@@ -49,4 +49,7 @@ public class User
 
     public ICollection<Invoice> Invoices { get; set; }
     = new List<Invoice>();
+
+    public ICollection<Subscription> Subscriptions { get; set; }
+    = new List<Subscription>();
 }
