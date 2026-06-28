@@ -1,152 +1,369 @@
-# E-Commerce Payment Module Database Schema
+# ShopPay
 
-This PL/SQL (Oracle) database schema supports an e-commerce payment module built with ASP.NET Core and Angular, integrating Stripe for payment processing. It consists of 9 tables to manage users, products, orders, payments, subscriptions, invoices, and addresses.
+ShopPay is a modern E-Commerce web application built using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, and **Stripe**. The project follows secure authentication practices using **JWT with HttpOnly Cookies**, supports complete user and address management, and is being extended with secure payment processing using Stripe Checkout.
 
-## Tables and Their Purposes
+---
 
-1. **Users**
-   - **Purpose**: Stores user information for authentication and profile management.
-   - **Fields**:
-     - `user_id`: Auto-generated ID (Primary Key).
-     - `email`: Unique user email.
-     - `password_hash`: Hashed password for security.
-     - `first_name`, `last_name`: User’s name.
-     - `created_at`, `updated_at`: Timestamps for record tracking.
+# Tech Stack
 
-2. **Products**
-   - **Purpose**: Manages e-commerce product catalog.
-   - **Fields**:
-     - `product_id`: Auto-generated ID (Primary Key).
-     - `name`: Product name.
-     - `description`: Product details (CLOB).
-     - `price`: Product price (non-negative).
-     - `stock_quantity`: Available stock (non-negative).
-     - `created_at`, `updated_at`: Timestamps.
+## Backend
+- ASP.NET Core Web API
+- Entity Framework Core
+- PostgreSQL
+- JWT Authentication
+- Refresh Tokens
+- HttpOnly Cookies
+- AutoMapper
 
-3. **Stripe_Customers**
-   - **Purpose**: Links users to Stripe customer IDs for payment processing.
-   - **Fields**:
-     - `stripe_customer_id`: Stripe customer ID (Primary Key).
-     - `user_id`: References `Users(user_id)` (Foreign Key).
-     - `created_at`: Timestamp.
+## Frontend
+- Angular
+- TypeScript
+- RxJS
+- Angular Router
+- HTTP Interceptors
+- Reactive Forms
 
-4. **Addresses**
-   - **Purpose**: Stores multiple shipping/billing addresses per user.
-   - **Fields**:
-     - `address_id`: Auto-generated ID (Primary Key).
-     - `user_id`: References `Users(user_id)` (Foreign Key).
-     - `address_type`: 'SHIPPING' or 'BILLING'.
-     - `street`, `city`, `postal_code`, `country`: Address details (required).
-     - `state`: Optional state/province.
-     - `is_default`: 'Y' or 'N' for default address.
-     - `created_at`, `updated_at`: Timestamps.
+## Database
+- PostgreSQL
 
-5. **Orders**
-   - **Purpose**: Tracks customer orders, including address and payment details.
-   - **Fields**:
-     - `order_id`: Auto-generated ID (Primary Key).
-     - `user_id`: References `Users(user_id)` (Foreign Key).
-     - `shipping_address_id`, `billing_address_id`: References `Addresses(address_id)` (Foreign Key, nullable).
-     - `total_amount`: Order total (non-negative).
-     - `order_status`: 'PENDING', 'COMPLETED', or 'CANCELLED'.
-     - `created_at`, `updated_at`: Timestamps.
+## Payment Gateway
+- Stripe Checkout (In Progress)
 
-6. **Order_Items**
-   - **Purpose**: Links orders to products (many-to-many).
-   - **Fields**:
-     - `order_item_id`: Auto-generated ID (Primary Key).
-     - `order_id`: References `Orders(order_id)` (Foreign Key).
-     - `product_id`: References `Products(product_id)` (Foreign Key).
-     - `quantity`: Number of items (positive).
-     - `unit_price`: Price per item (non-negative).
+---
 
-7. **Billing**
-   - **Purpose**: Records payment transactions via Stripe.
-   - **Fields**:
-     - `billing_id`: Auto-generated ID (Primary Key).
-     - `stripe_payment_intent_id`: Unique Stripe payment intent ID.
-     - `user_id`: References `Users(user_id)` (Foreign Key).
-     - `amount`: Payment amount (non-negative).
-     - `currency`: Currency code (default 'USD').
-     - `payment_status`: 'PENDING', 'SUCCEEDED', or 'FAILED'.
-     - `created_at`: Timestamp.
+# Features
 
-8. **Subscriptions**
-   - **Purpose**: Manages recurring subscription plans.
-   - **Fields**:
-     - `subscription_id`: Auto-generated ID (Primary Key).
-     - `stripe_subscription_id`: Unique Stripe subscription ID.
-     - `user_id`: References `Users(user_id)` (Foreign Key).
-     - `plan_name`: Subscription plan name.
-     - `status`: 'ACTIVE', 'CANCELLED', or 'PAST_DUE'.
-     - `start_date`, `end_date`: Subscription period.
-     - `created_at`: Timestamp.
+## Authentication & Security
 
-9. **Invoices**
-   - **Purpose**: Tracks invoices for payments or subscriptions.
-   - **Fields**:
-     - `invoice_id`: Auto-generated ID (Primary Key).
-     - `stripe_invoice_id`: Unique Stripe invoice ID.
-     - `user_id`: References `Users(user_id)` (Foreign Key).
-     - `billing_id`: References `Billing(billing_id)` (Foreign Key, nullable).
-     - `subscription_id`: References `Subscriptions(subscription_id)` (Foreign Key, nullable).
-     - `amount_due`, `amount_paid`: Invoice amounts (non-negative).
-     - `invoice_status`: 'OPEN', 'PAID', or 'VOID'.
-     - `created_at`: Timestamp.
-    
-# JWT Authentication with HttpOnly Cookies
+- User Registration
+- User Login
+- JWT Authentication
+- HttpOnly Cookie Authentication
+- Refresh Token Support
+- Refresh Token Database Storage
+- Automatic Token Refresh
+- Route Protection
+- Secure Logout
+- Authentication Validation Endpoint
 
-This project implements secure JWT authentication using HttpOnly cookies and refresh tokens across Angular and ASP.NET Core.
+---
 
-## Features
+## Product Module
 
-### Backend (.NET)
+- View Products
+- Product Details
+- Responsive Product Cards
+- Product Images
+- Product Price Display
 
-* User Registration
-* User Login
-* JWT Access Token Generation
-* Refresh Token Generation
-* Refresh Token Storage in Database
-* Token Refresh Endpoint
-* Secure Logout
-* JWT Bearer Authentication
-* Cookie-Based Authentication Middleware
+---
 
-### Frontend (Angular)
+## Cart Module
 
-* Authentication Service
-* HTTP Interceptor
-* Route Guard Protection
-* Automatic Token Refresh Handling
-* Credential-Based Requests (`withCredentials`)
-* Secure Logout Integration
+- Add to Cart
+- Remove from Cart
+- Update Quantity
+- Cart Total Calculation
+- Local Storage Persistence
 
-## API Endpoints
+---
 
-```http
-POST /api/users/register
-POST /api/users/login
-POST /api/users/refresh-token
-POST /api/users/logout
+## Address Module
+
+- Add Address
+- Update Address
+- Delete Address
+- Fetch User Addresses
+- Default Address Selection
+- Shipping Address Management
+
+---
+
+## Checkout Module
+
+- Checkout Summary
+- Selected Shipping Address
+- Order Preview
+
+---
+
+## Order Module
+
+- Create Order
+- Order Items
+- Order Confirmation
+- Order History (Planned)
+
+---
+
+## Payment Module (Work In Progress)
+
+- Stripe Checkout Session
+- Secure Payment Flow
+- Payment Success Page
+- Payment Cancel Page
+- Stripe Webhooks (Planned)
+- Payment Status Tracking
+- Invoice Generation (Planned)
+
+---
+
+# Database Entities
+
+The current backend consists of the following entities:
+
+- Users
+- Products
+- Addresses
+- Orders
+- OrderItems
+
+Future entities:
+
+- Payments
+- StripeCustomers
+- Billing
+- Invoices
+- Subscriptions
+
+---
+
+# Authentication Flow
+
+```
+User Login
+      │
+      ▼
+ASP.NET Core validates credentials
+      │
+      ▼
+JWT Access Token Generated
+      │
+      ▼
+Refresh Token Generated
+      │
+      ▼
+Stored in Database
+      │
+      ▼
+Access Token stored in HttpOnly Cookie
+      │
+      ▼
+Angular sends requests using withCredentials
+      │
+      ▼
+HTTP Interceptor
+      │
+      ▼
+Protected APIs
 ```
 
-## Security Features
+---
 
-* HttpOnly Cookies
-* Secure Cookies
-* SameSite Cookie Policy
-* Refresh Token Validation
-* Automatic Token Renewal
-* Cookie-Based JWT Authentication
+# API Endpoints
 
+## Authentication
 
+```
+POST   /api/users/register
+POST   /api/users/login
+POST   /api/users/refresh-token
+POST   /api/users/logout
+GET    /api/users/validate
+```
 
+---
 
-## Notes
-- **Total Tables**: 9
-- **Cart Handling**: Cart data is managed on the frontend using Angular’s `CartService` and `localStorage`, eliminating the need for cart-related tables.
-- **Indexes**: Added on foreign keys (e.g., `user_id`, `address_id`) for query performance.
-- **Constraints**: Primary keys, foreign keys, and check constraints ensure data integrity.
-- **Usage**: Execute the schema in Oracle using SQL Developer or DBeaver. Integrate with ASP.NET Core (using Entity Framework Core with Oracle provider) and Angular for full functionality.
+## Products
 
-For implementation details, refer to the project’s setup guides.
+```
+GET    /api/products
+GET    /api/products/{id}
+```
+
+---
+
+## Addresses
+
+```
+GET    /api/addresses/user/{userId}
+POST   /api/addresses
+PUT    /api/addresses/{id}
+DELETE /api/addresses/{id}
+```
+
+---
+
+## Orders
+
+```
+POST   /api/orders
+GET    /api/orders/{id}
+```
+
+---
+
+# Security Features
+
+- JWT Authentication
+- HttpOnly Cookies
+- Secure Cookies
+- SameSite Cookie Policy
+- Refresh Token Rotation
+- Cookie-Based Authentication
+- Route Guards
+- HTTP Interceptors
+- Unauthorized Request Handling
+
+---
+
+# Project Structure
+
+```
+ShopPay
+
+Backend
+│
+├── Controllers
+├── Services
+├── Repositories
+├── DTOs
+├── Models
+├── Data
+├── Migrations
+├── Middleware
+└── Program.cs
+
+Frontend
+│
+├── Components
+├── Services
+├── Guards
+├── Interceptors
+├── Models
+├── Shared
+└── Routes
+```
+
+---
+
+# Current Project Status
+
+## Completed
+
+- User Authentication
+- JWT Authentication
+- Refresh Tokens
+- HttpOnly Cookies
+- Angular Authentication Service
+- HTTP Interceptor
+- Route Guards
+- User Registration
+- User Login
+- Secure Logout
+- Product Listing
+- Product Details
+- Address CRUD
+- Checkout UI
+- Order Entity
+- OrderItem Entity
+
+---
+
+## In Progress
+
+- Stripe Checkout
+- Checkout Session Creation
+- Payment Success Flow
+- Payment Cancellation Flow
+- Order Confirmation
+- Payment Persistence
+
+---
+
+## Planned Features
+
+- Stripe Webhooks
+- Billing Module
+- Invoice Generation
+- Subscription Support
+- Admin Dashboard
+- Product Search
+- Product Categories
+- Wishlist
+- Order Tracking
+- Email Notifications
+
+---
+
+# Future Database Schema
+
+Current Tables
+
+- Users
+- Products
+- Addresses
+- Orders
+- OrderItems
+
+Upcoming Tables
+
+- StripeCustomers
+- Payments
+- Billing
+- Invoices
+- Subscriptions
+
+---
+
+# Running the Project
+
+## Backend
+
+```bash
+dotnet restore
+dotnet ef database update
+dotnet run
+```
+
+Backend runs on:
+
+```
+https://localhost:5001
+```
+
+---
+
+## Frontend
+
+```bash
+npm install
+ng serve
+```
+
+Frontend runs on:
+
+```
+http://localhost:4200
+```
+
+---
+
+# Future Enhancements
+
+- Stripe Webhooks
+- Invoice Generation
+- Subscription Billing
+- Email Notifications
+- Admin Dashboard
+- Product Reviews
+- Coupon System
+- Inventory Management
+- Docker Deployment
+- Azure Deployment
+
+---
+
+# License
+
+This project is built for learning modern Full Stack Development using **ASP.NET Core**, **Angular**, **PostgreSQL**, **JWT Authentication**, and **Stripe Payment Integration**.
