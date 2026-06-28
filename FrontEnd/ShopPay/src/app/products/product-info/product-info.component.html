@@ -1,0 +1,138 @@
+<form
+    [formGroup]="productForm"
+    (ngSubmit)="onRegister()"
+    novalidate>
+
+    <div>
+
+        <h3 class="section-title">
+            Product Information
+        </h3>
+        
+        <div class="error-message form-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div class="form-group">
+
+            <label for="name">
+                Product Name
+            </label>
+
+            <input
+                id="name"
+                type="text"
+                formControlName="name"
+                placeholder="Product Name">
+
+            <div
+                class="error-message"
+                *ngIf="productForm.get('name')?.invalid &&
+                (productForm.get('name')?.touched || submitted)">
+
+                Product name is required.
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="description">
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                rows="4"
+                formControlName="description"
+                placeholder="Product Description">
+            </textarea>
+
+            <div
+                class="error-message"
+                *ngIf="productForm.get('description')?.invalid &&
+                (productForm.get('description')?.touched || submitted)">
+
+                Description is required.
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="price">
+                Price
+            </label>
+
+            <input
+                id="price"
+                type="number"
+                formControlName="price"
+                placeholder="Price">
+
+            <div
+                class="error-message"
+                *ngIf="productForm.get('price')?.invalid &&
+                (productForm.get('price')?.touched || submitted)">
+
+                <span *ngIf="productForm.get('price')?.errors?.['required']">
+                    Price is required.
+                </span>
+
+                <span *ngIf="productForm.get('price')?.errors?.['min']">
+                    Price must be greater than 0.
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="stockQuantity">
+                Stock Quantity
+            </label>
+
+            <input
+                id="stockQuantity"
+                type="number"
+                formControlName="stockQuantity"
+                placeholder="Stock Quantity">
+
+            <div
+                class="error-message"
+                *ngIf="productForm.get('stockQuantity')?.invalid &&
+                (productForm.get('stockQuantity')?.touched || submitted)">
+
+                <span *ngIf="productForm.get('stockQuantity')?.errors?.['required']">
+                    Stock quantity is required.
+                </span>
+
+                <span *ngIf="productForm.get('stockQuantity')?.errors?.['min']">
+                    Stock quantity cannot be negative.
+                </span>
+
+            </div>
+
+        </div>
+
+        <button
+            type="submit"
+            [disabled]="isSubmitting"
+            [ngClass]="{ 'loading': isSubmitting }">
+
+            <span *ngIf="!isSubmitting">
+                Add Product
+            </span>
+
+            <span *ngIf="isSubmitting">
+                Saving...
+            </span>
+
+        </button>
+
+    </div>
+
+</form>

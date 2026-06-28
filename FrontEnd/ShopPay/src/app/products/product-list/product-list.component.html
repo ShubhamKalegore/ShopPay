@@ -1,7 +1,20 @@
 <div class="p-6">
-    <h1 class="text-3xl font-bold mb-6">
-        Products
-    </h1>
+    <div class="flex items-center justify-between gap-4 mb-6">
+        <h1 class="text-3xl font-bold">
+            Products
+        </h1>
+
+        <button
+            type="button"
+            (click)="openProductDialog()"
+            class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg shadow transition">
+
+            <span class="text-xl leading-none">+</span>
+
+            <span>Add Product</span>
+
+        </button>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 
@@ -43,3 +56,45 @@
 
     </div>
 </div>
+
+@if(isProductDialogOpen) {
+
+  <div
+    class="fixed inset-0 bg-black/50 z-[100]"
+    (click)="closeProductDialog()">
+  </div>
+
+  <div
+    class="fixed inset-0 flex items-center justify-center z-[101]">
+
+    <div
+      class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+      (click)="$event.stopPropagation()">
+
+      <div class="flex justify-between items-center p-4 border-b">
+
+        <h2 class="text-xl font-semibold">
+          Add Product
+        </h2>
+
+        <button
+          (click)="closeProductDialog()"
+          class="text-2xl">
+          ✕
+        </button>
+
+      </div>
+
+      <div class="p-6 overflow-y-auto">
+
+        <app-product-info
+          (saveProduct)="saveProduct($event)">
+        </app-product-info>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

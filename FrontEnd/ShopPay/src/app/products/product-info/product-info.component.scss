@@ -1,0 +1,90 @@
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dfe6e9;
+    padding-bottom: 8px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #34495e;
+    text-transform: capitalize;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px 15px;
+    font-size: 15px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    background-color: #f9fbfc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #0984e3;
+    box-shadow: 0 0 8px rgba(9, 132, 227, 0.2);
+    background-color: #ffffff;
+    outline: none;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 6px;
+    font-style: italic;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #0984e3;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background-color: #0871c1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(9, 132, 227, 0.3);
+}
+
+button[type="submit"]:disabled {
+    background-color: #b2bec3;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+@media (max-width: 600px) {
+    .form-group input,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    button[type="submit"] {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
