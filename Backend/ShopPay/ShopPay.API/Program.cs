@@ -5,6 +5,8 @@ using ShopPay.Application;
 using ShopPay.Infrastructure;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Stripe;
+using ShopPay.Application.Configurations;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -96,6 +98,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+StripeConfiguration.ApiKey =
+    builder.Configuration["Stripe:SecretKey"];
+
+builder.Services.Configure<StripeSettings>(
+    builder.Configuration.GetSection("Stripe"));
 
 var app = builder.Build();
 
