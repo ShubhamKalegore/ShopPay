@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
   cartCount = 0;
   private cartSubscription?: Subscription;
   isCartOpen = false;
+  isProfileOpen = false;
 
   constructor(
     private router: Router,
@@ -45,11 +46,33 @@ export class DashboardComponent implements OnInit, OnDestroy{
   }
 
   get displayName() {
+    return this.profileName || this.profileEmail || 'ShopPay User';
+  }
+
+  get profileUserId() {
+    return this.user?.userId ?? this.user?.UserId ?? 'N/A';
+  }
+
+  get profileName() {
+    const backendName = this.user?.userName ?? this.user?.UserName;
     const fullName = [this.user?.firstName, this.user?.lastName].filter(Boolean).join(' ');
-    return fullName || this.user?.email || 'ShopPay User';
+    return backendName || fullName || 'ShopPay User';
+  }
+
+  get profileEmail() {
+    return this.user?.userEmail ?? this.user?.UserEmail ?? this.user?.email ?? this.user?.Email ?? 'N/A';
+  }
+
+  get profileInitial() {
+    return this.profileName.charAt(0).toUpperCase();
+  }
+
+  toggleProfile(): void {
+    this.isProfileOpen = !this.isProfileOpen;
   }
 
   logout() {
+    this.isProfileOpen = false;
     this.authService.logout().subscribe({
       next: () => {
         localStorage.removeItem('shopPayUser');

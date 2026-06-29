@@ -49,7 +49,35 @@
           }
 
         </button>
-        <button class="logout-button" type="button" (click)="logout()">Log Out</button>
+        <div class="profile-menu">
+          <button
+            class="profile-button"
+            type="button"
+            aria-label="Open profile menu"
+            [attr.aria-expanded]="isProfileOpen"
+            (click)="toggleProfile()">
+            {{ profileInitial }}
+          </button>
+
+          @if(isProfileOpen) {
+            <div class="profile-dropdown">
+              <div class="profile-summary">
+                <span class="profile-avatar">{{ profileInitial }}</span>
+                <div>
+                  <p class="profile-name">{{ profileName }}</p>
+                  <p class="profile-email">{{ profileEmail }}</p>
+                </div>
+              </div>
+
+              <div class="profile-details">
+                <span>User ID</span>
+                <strong>{{ profileUserId }}</strong>
+              </div>
+
+              <button class="logout-button" type="button" (click)="logout()">Log Out</button>
+            </div>
+          }
+        </div>
       </div>
     </header>
 
