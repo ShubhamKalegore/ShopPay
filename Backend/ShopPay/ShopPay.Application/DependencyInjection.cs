@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShopPay.Application.Interfaces;
 using ShopPay.Application.Mappings;
 using ShopPay.Application.Services;
+using ShopPay.Infrastructure.Services;
 
 namespace ShopPay.Application;
 
@@ -19,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IBillingService, BillingService>();
         services.AddScoped<IInvoiceService, InvoiceService>();
         services.AddScoped<ISubscriptionService, SubscriptionService>();
+        services.AddScoped<IStripeService, StripeService>();
 
         return services;
     }
