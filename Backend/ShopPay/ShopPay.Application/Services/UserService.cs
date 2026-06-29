@@ -139,7 +139,9 @@ public class UserService : IUserService
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            UserId = user.UserId
+            UserId = user.UserId,
+            UserName = user.FirstName + user.LastName,
+            UserEmail = user.Email
         };
     }
 

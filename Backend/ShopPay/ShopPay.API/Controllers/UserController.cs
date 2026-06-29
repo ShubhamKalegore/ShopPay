@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using ShopPay.Application.DTOs;
 using ShopPay.Application.Interfaces;
+using ShopPay.Domain.Entities;
 
 namespace ShopPay.API.Controllers;
 
@@ -81,7 +82,9 @@ public class UserController : ControllerBase
         {
             userId = result.UserId,
             isAddressPresent = userAddress != null,
-            postalCode = userAddress?.PostalCode
+            postalCode = userAddress?.PostalCode,
+            userName = result.UserName,
+            userEmail = result.UserEmail
         });
     }
 
