@@ -1,6 +1,6 @@
 # ShopPay
 
-ShopPay is a modern E-Commerce web application built using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, and **Stripe**. The project follows secure authentication practices using **JWT with HttpOnly Cookies**, supports complete user and address management, and is being extended with secure payment processing using Stripe Checkout.
+ShopPay is a modern E-Commerce web application built using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, and **Stripe**. The project follows secure authentication practices using **JWT with HttpOnly Cookies**, supports complete user and address management and integrates secure payment processing using Stripe Payment Intents. The application follows a modern payment architecture and is being extended with payment verification, webhooks, billing, invoices, and subscriptions.
 
 ---
 
@@ -27,7 +27,8 @@ ShopPay is a modern E-Commerce web application built using **ASP.NET Core Web AP
 - PostgreSQL
 
 ## Payment Gateway
-- Stripe Checkout (In Progress)
+Stripe Payment Intents
+Stripe Elements (In Progress)
 
 ---
 
@@ -98,13 +99,16 @@ ShopPay is a modern E-Commerce web application built using **ASP.NET Core Web AP
 
 ## Payment Module (Work In Progress)
 
-- Stripe Checkout Session
-- Secure Payment Flow
-- Payment Success Page
-- Payment Cancel Page
-- Stripe Webhooks (Planned)
+- Stripe Payment Intents
+- Secure Card Payment Flow
+- Client Secret Generation
+- Payment Verification
+- Stripe Elements Integration (In Progress)
 - Payment Status Tracking
+- Billing Module (Planned)
 - Invoice Generation (Planned)
+- Stripe Webhooks (Planned)
+- Subscription Support (Planned)
 
 ---
 
@@ -201,6 +205,11 @@ POST   /api/orders
 GET    /api/orders/{id}
 ```
 
+## Stripe
+
+POST   /api/stripe/create-payment-intent
+GET    /api/stripe/verify/{paymentIntentId}
+
 ---
 
 # Security Features
@@ -272,8 +281,9 @@ Frontend
 
 ## In Progress
 
-- Stripe Checkout
-- Checkout Session Creation
+- Stripe Payment Intents
+- Stripe Elements Integration
+- Payment Verification
 - Payment Success Flow
 - Payment Cancellation Flow
 - Order Confirmation
@@ -286,14 +296,15 @@ Frontend
 - Stripe Webhooks
 - Billing Module
 - Invoice Generation
-- Subscription Support
-- Admin Dashboard
+- Subscription Management
+- Customer Portal
+- Order History
+- Order Tracking
 - Product Search
 - Product Categories
 - Wishlist
-- Order Tracking
 - Email Notifications
-
+- Admin Dashboard
 ---
 
 # Future Database Schema
@@ -308,8 +319,8 @@ Current Tables
 
 Upcoming Tables
 
-- StripeCustomers
 - Payments
+- StripeCustomers
 - Billing
 - Invoices
 - Subscriptions
@@ -352,12 +363,13 @@ http://localhost:4200
 # Future Enhancements
 
 - Stripe Webhooks
-- Invoice Generation
+- Billing & Invoicing
 - Subscription Billing
+- Customer Portal
+- Order Tracking
 - Email Notifications
-- Admin Dashboard
-- Product Reviews
 - Coupon System
+- Product Reviews
 - Inventory Management
 - Docker Deployment
 - Azure Deployment
