@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace ShopPay.Application.DTOs.Stripe;
 
-public class CheckoutItemDto
+public class PaymentItemDto
 {
     public int ProductId { get; set; }
 
     public string ProductName { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
-
     public decimal UnitPrice { get; set; }
 
     public int Quantity { get; set; }
 
-    public string Currency { get; set; } = "usd";
+    public string Currency { get; set; } = "inr";
 }

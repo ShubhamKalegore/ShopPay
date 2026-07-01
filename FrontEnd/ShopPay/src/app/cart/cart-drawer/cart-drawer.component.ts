@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CartService } from '../../core/services/cart.service';
 import { CartItem } from '../../core/models/cart-item';
 import { AddressInfoComponent } from '../../auth/address-info/address-info.component';
+import { StripeService } from '../../core/services/stripe.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class CartDrawerComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private readonly stripeService: StripeService,
   ) { }
 
   ngOnInit(): void {
@@ -126,5 +128,46 @@ export class CartDrawerComponent implements OnInit {
 
   private get isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
+  }
+
+checkout(): void {
+
+  if (this.cartItems.length === 0) {
+    return;
+  }
+
+  if (!this.postalCode) {
+    this.openAddressDialog();
+    return;
+  }
+
+    const request = {
+      items: this.cartItems.map(item => ({
+        productId: item.productId,
+        productName: item.name,
+        unitPrice: item.price,
+        quantity: item.quantity,
+        currency: 'inr'
+      }))
+    };
+
+    this.stripeService
+      .createPaymentIntent(request)
+      .subscribe({
+
+        next: response => {
+
+          console.log(response);
+
+        },
+
+        error: error => {
+
+          console.error(error);
+
+        }
+
+      });
+
   }
 }

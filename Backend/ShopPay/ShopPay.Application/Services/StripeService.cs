@@ -1,77 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Options;
-using ShopPay.Application.Configurations;
-using ShopPay.Application.DTOs.Stripe;
+﻿using ShopPay.Application.DTOs.Stripe;
 using ShopPay.Application.Interfaces;
-using Stripe.Checkout;
+using Stripe;
 
 namespace ShopPay.Infrastructure.Services;
 
 public class StripeService : IStripeService
 {
-    private readonly StripeSettings _stripeSettings;
-
-    public StripeService(IOptions<StripeSettings> stripeSettings)
+    public async Task<CreatePaymentIntentResponseDto> CreatePaymentIntentAsync(
+        CreatePaymentIntentRequestDto request)
     {
-        _stripeSettings = stripeSettings.Value;
-    }
+        var totalAmount = request.Items.Sum(item =>
+            item.UnitPrice * item.Quantity);
 
-    public async Task<CheckoutSessionResponseDto> CreateCheckoutSessionAsync(
-        CreateCheckoutSessionRequestDto request)
-    {
-        var lineItems = request.Items.Select(item => new SessionLineItemOptions
+        var options = new PaymentIntentCreateOptions
         {
-            PriceData = new SessionLineItemPriceDataOptions
+            Amount = (long)(totalAmount * 100),
+
+            Currency = request.Items.First().Currency,
+
+            AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
             {
-                Currency = item.Currency,
-
-                UnitAmountDecimal = item.UnitPrice * 100,
-
-                ProductData = new SessionLineItemPriceDataProductDataOptions
-                {
-                    Name = item.ProductName,
-                    Description = item.Description
-                }
-            },
-
-            Quantity = item.Quantity
-        }).ToList();
-
-        var options = new SessionCreateOptions
-        {
-            PaymentMethodTypes = new List<string>
-            {
-                "card"
-            },
-
-            Mode = "payment",
-
-            SuccessUrl = request.SuccessUrl,
-
-            CancelUrl = request.CancelUrl,
-
-            LineItems = lineItems
+                Enabled = true
+            }
         };
 
-        var service = new SessionService();
+        var service = new PaymentIntentService();
 
-        var session = await service.CreateAsync(options);
+        var paymentIntent =
+            await service.CreateAsync(options);
 
-        return new CheckoutSessionResponseDto
+        return new CreatePaymentIntentResponseDto
         {
-            SessionId = session.Id,
-            CheckoutUrl = session.Url!
+            ClientSecret = paymentIntent.ClientSecret!,
+            PaymentIntentId = paymentIntent.Id
         };
     }
 
     public async Task<VerifyPaymentResponseDto> VerifyPaymentAsync(
-        string sessionId)
+        string paymentIntentId)
     {
-        throw new NotImplementedException();
+        var service = new PaymentIntentService();
+
+        var paymentIntent =
+            await service.GetAsync(paymentIntentId);
+
+        return new VerifyPaymentResponseDto
+        {
+            PaymentIntentId = paymentIntent.Id,
+            PaymentStatus = paymentIntent.Status,
+            AmountTotal = paymentIntent.Amount / 100m,
+            Currency = paymentIntent.Currency,
+            IsPaid = paymentIntent.Status == "succeeded"
+        };
     }
 }

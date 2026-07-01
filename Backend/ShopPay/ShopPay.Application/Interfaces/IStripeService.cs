@@ -11,18 +11,18 @@ namespace ShopPay.Application.Interfaces;
 public interface IStripeService
 {
     /// <summary>
-    /// Creates a Stripe Checkout Session and returns the session details.
+    /// Creates a Stripe Payment Intent and returns the client secret.
     /// </summary>
-    /// <param name="request">Checkout session request.</param>
-    /// <returns>Checkout session response.</returns>
-    Task<CheckoutSessionResponseDto> CreateCheckoutSessionAsync(
-        CreateCheckoutSessionRequestDto request);
+    /// <param name="request">Payment intent request.</param>
+    /// <returns>Payment intent details.</returns>
+    Task<CreatePaymentIntentResponseDto> CreatePaymentIntentAsync(
+        CreatePaymentIntentRequestDto request);
 
     /// <summary>
-    /// Verifies the payment status of a Checkout Session.
+    /// Verifies the payment status of a Stripe Payment Intent.
     /// </summary>
-    /// <param name="sessionId">Stripe Checkout Session Id.</param>
+    /// <param name="paymentIntentId">Stripe Payment Intent Id.</param>
     /// <returns>Payment verification details.</returns>
     Task<VerifyPaymentResponseDto> VerifyPaymentAsync(
-        string sessionId);
+        string paymentIntentId);
 }

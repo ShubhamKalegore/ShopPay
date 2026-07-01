@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.AspNetCore.Mvc;
 using ShopPay.Application.DTOs.Stripe;
 using ShopPay.Application.Interfaces;
 
@@ -12,27 +10,28 @@ public class StripeController : ControllerBase
 {
     private readonly IStripeService _stripeService;
 
-    public StripeController(IStripeService stripeService)
+    public StripeController(
+        IStripeService stripeService)
     {
         _stripeService = stripeService;
     }
 
-    [HttpPost("create-checkout-session")]
-    public async Task<IActionResult> CreateCheckoutSession(
-        [FromBody] CreateCheckoutSessionRequestDto request)
+    [HttpPost("create-payment-intent")]
+    public async Task<IActionResult> CreatePaymentIntent(
+        [FromBody] CreatePaymentIntentRequestDto request)
     {
         var response =
-            await _stripeService.CreateCheckoutSessionAsync(request);
+            await _stripeService.CreatePaymentIntentAsync(request);
 
         return Ok(response);
     }
 
-    [HttpGet("verify/{sessionId}")]
+    [HttpGet("verify/{paymentIntentId}")]
     public async Task<IActionResult> VerifyPayment(
-        string sessionId)
+        string paymentIntentId)
     {
         var response =
-            await _stripeService.VerifyPaymentAsync(sessionId);
+            await _stripeService.VerifyPaymentAsync(paymentIntentId);
 
         return Ok(response);
     }

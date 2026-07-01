@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShopPay.Application.DTOs.Stripe;
 
-public class CheckoutSessionResponseDto
+public class CreatePaymentIntentRequestDto
 {
-    public string SessionId { get; set; } = string.Empty;
-
-    public string CheckoutUrl { get; set; } = string.Empty;
+    public List<PaymentItemDto> Items { get; set; } = [];
 }
