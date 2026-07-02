@@ -1,0 +1,44 @@
+.payment-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f7faf9;
+  padding: 24px;
+}
+
+.payment-panel {
+  width: min(100%, 520px);
+  border: 1px solid #d9e2df;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(21, 38, 34, 0.12);
+  padding: 24px;
+}
+
+.payment-panel h2 {
+  margin: 0 0 24px;
+  color: #152622;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#card-element {
+  min-height: 160px;
+}
+
+.pay-button {
+  width: 100%;
+  margin-top: 24px;
+  border: 0;
+  border-radius: 8px;
+  background: #168a53;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 16px;
+}
+
+.pay-button:hover {
+  background: #0f7042;
+}

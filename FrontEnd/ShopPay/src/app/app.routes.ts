@@ -12,6 +12,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadChildren: () => import('./dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES)
   },
-
+  {
+    path: 'payment',
+    loadComponent: () =>
+      import('./features/payment/payment/payment.component')
+        .then(c => c.PaymentComponent)
+  },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];

@@ -4,6 +4,7 @@ import { CartService } from '../../core/services/cart.service';
 import { CartItem } from '../../core/models/cart-item';
 import { AddressInfoComponent } from '../../auth/address-info/address-info.component';
 import { StripeService } from '../../core/services/stripe.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class CartDrawerComponent implements OnInit {
     private cartService: CartService,
     @Inject(PLATFORM_ID) private platformId: object,
     private readonly stripeService: StripeService,
+    private readonly router: Router
   ) { }
 
   ngOnInit(): void {
@@ -157,7 +159,15 @@ checkout(): void {
 
         next: response => {
 
-          console.log(response);
+          this.router.navigate(
+            ['/payment'],
+            {
+              state: {
+                clientSecret: response.clientSecret,
+                paymentIntentId: response.paymentIntentId
+              }
+            }
+          );
 
         },
 
