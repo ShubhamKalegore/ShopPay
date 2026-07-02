@@ -85,4 +85,63 @@ export class PaymentComponent implements OnInit {
 
   }
 
+  async pay(): Promise<void> {
+
+    if (!this.stripe || !this.elements) {
+      return;
+    }
+
+    const result = await this.stripe.confirmPayment({
+
+      elements: this.elements,
+
+      confirmParams: {
+
+        return_url: 'http://localhost:4200/payment/success'
+
+      },
+
+      redirect: 'if_required'
+
+    });
+
+    if (result.error) {
+
+      console.error(result.error.message);
+
+      return;
+
+    }
+
+    if (result.paymentIntent?.status === 'succeeded') {
+
+      console.log(result.paymentIntent);
+
+      const navigated = await this.router.navigate(
+        ['/payment/success'],
+        {
+          state: {
+            paymentIntentId: result.paymentIntent.id
+          }
+        }
+      );
+
+      console.log('Navigation:', navigated);
+
+    }
+    else {
+
+      await this.router.navigate(
+        ['/payment/failed'],
+        {
+          state: {
+            paymentIntentId: result.paymentIntent?.id,
+            status: result.paymentIntent?.status
+          }
+        });
+
+    }
+
+  }
+
 }

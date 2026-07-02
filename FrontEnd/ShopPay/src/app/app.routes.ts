@@ -12,11 +12,26 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadChildren: () => import('./dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES)
   },
+    {
+    path: 'payment/failed',
+    loadComponent: () =>
+      import('./features/payment/payment-cancel/payment-cancel.component')
+        .then(c => c.PaymentCancelComponent)
+  },
+    {
+    path: 'payment/success',
+    loadComponent: () =>
+      import('./features/payment/payment-success/payment-success.component')
+        .then(c => c.PaymentSuccessComponent)
+  },
+
   {
     path: 'payment',
     loadComponent: () =>
       import('./features/payment/payment/payment.component')
         .then(c => c.PaymentComponent)
   },
+
+
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
