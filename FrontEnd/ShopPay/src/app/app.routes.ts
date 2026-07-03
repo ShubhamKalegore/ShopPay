@@ -16,7 +16,7 @@ export const routes: Routes = [
     path: 'payment/failed',
     loadComponent: () =>
       import('./features/payment/payment-cancel/payment-cancel.component')
-        .then(c => c.PaymentCancelComponent)
+        .then(c => c.PaymentFailedComponent)
   },
     {
     path: 'payment/success',
