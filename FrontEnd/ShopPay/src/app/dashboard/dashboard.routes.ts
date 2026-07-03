@@ -15,6 +15,12 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: 'products',
         component: ProductListComponent
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./orders/order-list/order-list.component')
+            .then(c => c.OrderListComponent)
       }
     ]
   }

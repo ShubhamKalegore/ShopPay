@@ -1,0 +1,111 @@
+<div class="max-w-7xl mx-auto p-6">
+
+  <h1 class="text-3xl font-bold mb-6">
+    My Orders
+  </h1>
+
+  <div class="flex gap-4 border-b mb-8">
+
+    <button
+      (click)="showConfirmed()"
+      class="px-5 py-3 font-medium border-b-2 transition"
+      [class.border-green-600]="selectedTab === 'confirmed'"
+      [class.text-green-600]="selectedTab === 'confirmed'">
+
+      Confirmed Orders
+
+    </button>
+
+    <button
+      (click)="showPending()"
+      class="px-5 py-3 font-medium border-b-2 transition"
+      [class.border-orange-500]="selectedTab === 'pending'"
+      [class.text-orange-500]="selectedTab === 'pending'">
+
+      Payment Pending
+
+    </button>
+
+  </div>
+
+  @if(selectedTab === 'confirmed') {
+
+    <div class="space-y-4">
+
+      @for(order of confirmedOrders; track order.orderId) {
+
+        <div
+          class="bg-white rounded-xl shadow p-5 border hover:shadow-lg transition">
+
+          <div class="flex justify-between">
+
+            <div>
+
+              <h3 class="font-semibold text-lg">
+                Order #{{order.orderId}}
+              </h3>
+
+              <p class="text-gray-500 mt-1">
+                {{order.createdAt}}
+              </p>
+
+            </div>
+
+            <span
+              class="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold">
+
+              Confirmed
+
+            </span>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="space-y-4">
+
+      @for(order of pendingOrders; track order.orderId) {
+
+        <div
+          class="bg-white rounded-xl shadow p-5 border hover:shadow-lg transition">
+
+          <div class="flex justify-between">
+
+            <div>
+
+              <h3 class="font-semibold text-lg">
+                Order #{{order.orderId}}
+              </h3>
+
+              <p class="text-gray-500 mt-1">
+                {{order.createdAt}}
+              </p>
+
+            </div>
+
+            <span
+              class="bg-orange-100 text-orange-700 px-4 py-2 rounded-full font-semibold">
+
+              Payment Pending
+
+            </span>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>
