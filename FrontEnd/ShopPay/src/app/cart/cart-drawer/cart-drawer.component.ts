@@ -25,6 +25,9 @@ export class CartDrawerComponent implements OnInit {
   isAddressPresent = false;
   postalCode: string | null = null;
 
+  userData = localStorage.getItem('shopPayUser');
+  user = this.userData ? JSON.parse(this.userData) : null;
+
   constructor(
     private cartService: CartService,
     @Inject(PLATFORM_ID) private platformId: object,
@@ -164,7 +167,12 @@ checkout(): void {
             {
               state: {
                 clientSecret: response.clientSecret,
-                paymentIntentId: response.paymentIntentId
+                paymentIntentId: response.paymentIntentId,
+                order: {
+                  userId: this.user.userId,
+                  totalAmount: this.subtotal,
+                  orderStatus: 'PENDING'
+                }
               }
             }
           );

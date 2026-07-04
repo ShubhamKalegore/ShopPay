@@ -7,6 +7,9 @@ import {
   StripeElements
 } from '@stripe/stripe-js';
 import { environment } from '../../../../environments/environment';
+import { Order } from '../../../core/models/order.model';
+import { OrderService } from '../../../core/services/order.service';
+import { StripeService } from '../../../core/services/stripe.service';
 
 
 @Component({
@@ -19,6 +22,8 @@ import { environment } from '../../../../environments/environment';
 export class PaymentComponent implements OnInit {
 
   clientSecret!: string;
+  
+  order!: Order;
 
   paymentIntentId!: string;
 
@@ -27,7 +32,9 @@ export class PaymentComponent implements OnInit {
   elements: StripeElements | null = null;
 
   constructor(
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly orderService: OrderService,
+    private readonly stripeService: StripeService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -43,6 +50,9 @@ export class PaymentComponent implements OnInit {
 
     this.paymentIntentId =
       state?.['paymentIntentId'];
+
+    this.order =
+      state?.['order'];
 
     if (!this.clientSecret || !this.paymentIntentId) {
       this.router.navigate(['/dashboard']);
@@ -109,6 +119,8 @@ export class PaymentComponent implements OnInit {
 
       console.error(result.error.message);
 
+      await this.router.navigate(['/payment/failed']);
+
       return;
 
     }
@@ -117,16 +129,9 @@ export class PaymentComponent implements OnInit {
 
       console.log(result.paymentIntent);
 
-      const navigated = await this.router.navigate(
-        ['/payment/success'],
-        {
-          state: {
-            paymentIntentId: result.paymentIntent.id
-          }
-        }
+      await this.verifyPayment(
+        result.paymentIntent.id
       );
-
-      console.log('Navigation:', navigated);
 
     }
     else {
@@ -143,5 +148,86 @@ export class PaymentComponent implements OnInit {
     }
 
   }
+
+
+  private async verifyPayment(
+    paymentIntentId: string
+  ): Promise<void> {
+
+    this.stripeService
+      .verifyPayment(paymentIntentId)
+      .subscribe({
+
+        next: response => {
+
+          console.log(response);
+
+          if (response.isPaid) {
+
+              this.createOrder(paymentIntentId);
+
+          }
+          else {
+
+              this.router.navigate(['/payment/failed']);
+
+          }
+
+        },
+
+        error: error => {
+
+          console.error(error);
+
+          this.router.navigate(['/payment/failed']);
+
+        }
+
+      });
+
+  }
+
+
+    private createOrder(
+      paymentIntentId: string
+    ): void {
+
+      this.order.stripePaymentIntentId =
+        paymentIntentId;
+
+      this.order.isPaymentConfirmed =
+        false;
+
+      this.orderService
+        .createOrder(this.order)
+        .subscribe({
+
+          next: response => {
+
+            console.log('Order Created', response);
+
+            this.router.navigate(
+              ['/payment/success'],
+              {
+                state: {
+                  order: response
+                }
+              });
+
+          },
+
+          error: error => {
+
+            console.error(error);
+
+            this.router.navigate(
+              ['/payment/failed']
+            );
+
+          }
+
+        });
+
+    }
 
 }
