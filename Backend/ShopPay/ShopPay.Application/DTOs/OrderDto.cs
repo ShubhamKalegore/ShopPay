@@ -13,4 +13,8 @@ public class OrderDto
     public decimal TotalAmount { get; set; }
 
     public string OrderStatus { get; set; } = string.Empty;
+
+    public bool IsPaymentConfirmed { get; set; }
+
+    public string? StripePaymentIntentId { get; set; }
 }

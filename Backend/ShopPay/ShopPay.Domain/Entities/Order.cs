@@ -21,6 +21,14 @@ public class Order
     [Column("total_amount")]
     public decimal TotalAmount { get; set; }
 
+    [Column("is_payment_confirmed")]
+    public bool IsPaymentConfirmed { get; set; } = false;
+
+    [Column("stripe_payment_intent_id")]
+    [MaxLength(255)]
+    public string? StripePaymentIntentId { get; set; }
+
+
     [Column("order_status")]
     public string OrderStatus { get; set; } = "PENDING";
 

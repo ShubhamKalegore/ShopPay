@@ -83,4 +83,15 @@ public class OrderController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("payment-status/{isPaymentConfirmed}")]
+    public async Task<IActionResult> GetOrdersByPaymentStatus(
+    bool isPaymentConfirmed)
+    {
+        var orders = 
+            await _orderService.GetOrdersByPaymentStatusAsync(
+                isPaymentConfirmed);
+
+        return Ok(orders);
+    }
 }

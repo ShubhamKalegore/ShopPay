@@ -65,6 +65,11 @@ public class OrderService : IOrderService
             OrderStatus = string.IsNullOrWhiteSpace(orderDto.OrderStatus)
                 ? "PENDING"
                 : orderDto.OrderStatus,
+
+            IsPaymentConfirmed = false,
+
+            StripePaymentIntentId = orderDto.StripePaymentIntentId,
+
             CreatedAt = now,
             UpdatedAt = now
         };
@@ -100,6 +105,12 @@ public class OrderService : IOrderService
         order.UpdatedAt =
             DateTime.UtcNow;
 
+        order.IsPaymentConfirmed =
+            orderDto.IsPaymentConfirmed;
+
+        order.StripePaymentIntentId =
+            orderDto.StripePaymentIntentId;
+
         _orderRepository.Update(order);
 
         await _orderRepository.SaveChangesAsync();
@@ -118,5 +129,18 @@ public class OrderService : IOrderService
         _orderRepository.Delete(order);
 
         await _orderRepository.SaveChangesAsync();
+    }
+
+    public async Task<List<OrderDto>> GetOrdersByPaymentStatusAsync(bool isPaymentConfirmed)
+    {
+        _logger.LogInformation(
+            "Fetching orders with payment status {Status}",
+            isPaymentConfirmed);
+
+        var orders =
+            await _orderRepository.GetOrdersByPaymentStatusAsync(
+                isPaymentConfirmed);
+
+        return _mapper.Map<List<OrderDto>>(orders);
     }
 }
