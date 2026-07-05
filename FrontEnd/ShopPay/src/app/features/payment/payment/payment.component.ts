@@ -22,7 +22,7 @@ import { StripeService } from '../../../core/services/stripe.service';
 export class PaymentComponent implements OnInit {
 
   clientSecret!: string;
-  
+
   order!: Order;
 
   paymentIntentId!: string;
@@ -150,9 +150,7 @@ export class PaymentComponent implements OnInit {
   }
 
 
-  private async verifyPayment(
-    paymentIntentId: string
-  ): Promise<void> {
+  private async verifyPayment(paymentIntentId: string): Promise<void> {
 
     this.stripeService
       .verifyPayment(paymentIntentId)
@@ -164,12 +162,12 @@ export class PaymentComponent implements OnInit {
 
           if (response.isPaid) {
 
-              this.createOrder(paymentIntentId);
+            this.createOrder(paymentIntentId);
 
           }
           else {
 
-              this.router.navigate(['/payment/failed']);
+            this.router.navigate(['/payment/failed']);
 
           }
 
@@ -188,48 +186,46 @@ export class PaymentComponent implements OnInit {
   }
 
 
-    private createOrder(
-      paymentIntentId: string
-    ): void {
+  private createOrder(paymentIntentId: string): void {
 
-      this.order.stripePaymentIntentId =
-        paymentIntentId;
+    this.order.stripePaymentIntentId =
+      paymentIntentId;
 
-      this.order.isPaymentConfirmed =
-        false;
+    this.order.isPaymentConfirmed =
+      false;
 
-      this.order.orderStatus = "CONFIRMED"
+    this.order.orderStatus = "CONFIRMED"
 
-      this.orderService
-        .createOrder(this.order)
-        .subscribe({
+    this.orderService
+      .createOrder(this.order)
+      .subscribe({
 
-          next: response => {
+        next: response => {
 
-            console.log('Order Created', response);
+          console.log('Order Created', response);
 
-            this.router.navigate(
-              ['/payment/success'],
-              {
-                state: {
-                  order: response
-                }
-              });
+          this.router.navigate(
+            ['/payment/success'],
+            {
+              state: {
+                order: response
+              }
+            });
 
-          },
+        },
 
-          error: error => {
+        error: error => {
 
-            console.error(error);
+          console.error(error);
 
-            this.router.navigate(
-              ['/payment/failed']
-            );
+          this.router.navigate(
+            ['/payment/failed']
+          );
 
-          }
+        }
 
-        });
+      });
 
-    }
+  }
 
 }

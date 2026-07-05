@@ -29,9 +29,7 @@ export class OrderService {
 
   }
 
-  getOrder(
-    orderId: number
-  ): Observable<Order> {
+  getOrder(orderId: number): Observable<Order> {
 
     return this.http.get<Order>(
       `${this.baseUrl}/${orderId}`
@@ -39,9 +37,7 @@ export class OrderService {
 
   }
 
-  createOrder(
-    order: Order
-  ): Observable<Order> {
+  createOrder(order: Order): Observable<Order> {
 
     return this.http.post<Order>(
       this.baseUrl,
@@ -50,10 +46,7 @@ export class OrderService {
 
   }
 
-  updateOrder(
-    orderId: number,
-    order: Order
-  ): Observable<Order> {
+  updateOrder(orderId: number,order: Order): Observable<Order> {
 
     return this.http.put<Order>(
       `${this.baseUrl}/${orderId}`,
@@ -62,9 +55,7 @@ export class OrderService {
 
   }
 
-  deleteOrder(
-    orderId: number
-  ): Observable<void> {
+  deleteOrder(orderId: number): Observable<void> {
 
     return this.http.delete<void>(
       `${this.baseUrl}/${orderId}`
@@ -72,9 +63,7 @@ export class OrderService {
 
   }
 
-  getOrdersByPaymentStatus(
-    isPaymentConfirmed: boolean
-  ): Observable<Order[]> {
+  getOrdersByPaymentStatus(isPaymentConfirmed: boolean): Observable<Order[]> {
 
     return this.http.get<Order[]>(
       `${this.baseUrl}/payment-status/${isPaymentConfirmed}`

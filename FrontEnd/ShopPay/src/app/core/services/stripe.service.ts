@@ -20,9 +20,7 @@ export class StripeService {
     private readonly http: HttpClient
   ) { }
 
-  createPaymentIntent(
-    request: CreatePaymentIntentRequest
-  ): Observable<CreatePaymentIntentResponse> {
+  createPaymentIntent(request: CreatePaymentIntentRequest): Observable<CreatePaymentIntentResponse> {
 
     return this.http.post<CreatePaymentIntentResponse>(
       `${this.baseUrl}/create-payment-intent`,
@@ -31,9 +29,7 @@ export class StripeService {
 
   }
 
-  verifyPayment(
-    paymentIntentId: string
-  ): Observable<VerifyPaymentResponse> {
+  verifyPayment(paymentIntentId: string): Observable<VerifyPaymentResponse> {
 
     return this.http.get<VerifyPaymentResponse>(
       `${this.baseUrl}/verify/${paymentIntentId}`
