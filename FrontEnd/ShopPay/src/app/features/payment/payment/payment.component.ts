@@ -198,6 +198,8 @@ export class PaymentComponent implements OnInit {
       this.order.isPaymentConfirmed =
         false;
 
+      this.order.orderStatus = "CONFIRMED"
+
       this.orderService
         .createOrder(this.order)
         .subscribe({

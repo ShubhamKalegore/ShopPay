@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../../../core/services/order.service';
 
 @Component({
   selector: 'app-order-list',
@@ -7,7 +8,24 @@ import { Component } from '@angular/core';
   imports: [CommonModule],
   templateUrl: './order-list.component.html'
 })
-export class OrderListComponent {
+export class OrderListComponent implements OnInit {
+
+  constructor (
+    private orderService : OrderService
+  ) {
+
+  }
+  ngOnInit(): void {
+    this.orderService.getOrders().subscribe((orders: any[]) => {
+      this.pendingOrders = orders.filter(
+        order => order.orderStatus?.toUpperCase() === 'PENDING'
+      );
+
+      this.confirmedOrders = orders.filter(
+        order => order.orderStatus?.toUpperCase() === 'CONFIRMED'
+      );
+    });
+  }
 
   selectedTab: 'confirmed' | 'pending' = 'confirmed';
 
