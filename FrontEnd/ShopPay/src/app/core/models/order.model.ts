@@ -1,3 +1,5 @@
+import { OrderItem } from "./order-item.model";
+
 export interface Order {
 
   orderId: number;
@@ -15,5 +17,7 @@ export interface Order {
   isPaymentConfirmed: boolean;
 
   stripePaymentIntentId?: string;
+
+  orderItems: OrderItem[];
 
 }

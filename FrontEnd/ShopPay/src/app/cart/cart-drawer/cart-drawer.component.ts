@@ -36,7 +36,6 @@ export class CartDrawerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.cartService.cartItems$.subscribe(items => {
       this.cartItems = items;
     });
@@ -135,16 +134,16 @@ export class CartDrawerComponent implements OnInit {
     return isPlatformBrowser(this.platformId);
   }
 
-checkout(): void {
+  checkout(): void {
 
-  if (this.cartItems.length === 0) {
-    return;
-  }
+    if (this.cartItems.length === 0) {
+      return;
+    }
 
-  if (!this.postalCode) {
-    this.openAddressDialog();
-    return;
-  }
+    if (!this.postalCode) {
+      this.openAddressDialog();
+      return;
+    }
 
     const request = {
       items: this.cartItems.map(item => ({
@@ -171,7 +170,12 @@ checkout(): void {
                 order: {
                   userId: this.user.userId,
                   totalAmount: this.subtotal,
-                  orderStatus: 'PENDING'
+                  orderStatus: 'PENDING',
+                  orderItems: this.cartItems.map(item => ({
+                    productId: item.productId,
+                    quantity: item.quantity,
+                    unitPrice: item.price
+                  }))
                 }
               }
             }
