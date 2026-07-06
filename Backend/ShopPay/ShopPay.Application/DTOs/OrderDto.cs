@@ -17,4 +17,6 @@ public class OrderDto
     public bool IsPaymentConfirmed { get; set; }
 
     public string? StripePaymentIntentId { get; set; }
+
+    public ICollection<OrderItemDto> OrderItems { get; set; } = new List<OrderItemDto>();
 }

@@ -22,4 +22,11 @@ public class OrderRepository: GenericRepository<Order, int>, IOrderRepository
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }
+
+    public async Task<List<Order>> GetAllOrdersAsync()
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ToListAsync();
+    }
 }

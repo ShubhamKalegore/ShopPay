@@ -27,7 +27,7 @@ public class OrderService : IOrderService
         _logger.LogInformation("Fetching all orders");
 
         var orders =
-            await _orderRepository.GetAllAsync();
+            await _orderRepository.GetAllOrdersAsync();
 
         return _mapper.Map<List<OrderDto>>(orders);
     }
@@ -69,6 +69,13 @@ public class OrderService : IOrderService
             IsPaymentConfirmed = false,
 
             StripePaymentIntentId = orderDto.StripePaymentIntentId,
+
+            OrderItems = orderDto.OrderItems.Select(item => new OrderItem
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice
+            }).ToList(),
 
             CreatedAt = now,
             UpdatedAt = now

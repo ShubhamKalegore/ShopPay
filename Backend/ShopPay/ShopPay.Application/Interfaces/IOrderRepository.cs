@@ -11,4 +11,6 @@ namespace ShopPay.Application.Interfaces;
 public interface IOrderRepository : IGenericRepository<Order, int>
 {
     Task<List<Order>> GetOrdersByPaymentStatusAsync(bool isPaymentConfirmed);
+
+    Task<List<Order>> GetAllOrdersAsync();
 }
