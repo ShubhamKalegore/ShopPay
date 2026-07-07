@@ -39,4 +39,12 @@ export class ProductService {
       { withCredentials: true }
     );
   }
+  updateProduct(id: number, product: CreateProductPayload): Observable<Product> {
+    return this.http.put<Product>(
+      `${this.baseUrl}/${id}`,
+      product,
+      { withCredentials: true }
+    );
+  }
+
 }

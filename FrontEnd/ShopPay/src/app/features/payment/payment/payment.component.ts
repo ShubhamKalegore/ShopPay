@@ -10,6 +10,10 @@ import { environment } from '../../../../environments/environment';
 import { Order } from '../../../core/models/order.model';
 import { OrderService } from '../../../core/services/order.service';
 import { StripeService } from '../../../core/services/stripe.service';
+import { ProductService } from '../../../core/services/product.service';
+import { CartItem } from '../../../core/models/cart-item';
+import { Product } from '../../../core/models/product';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -31,10 +35,13 @@ export class PaymentComponent implements OnInit {
 
   elements: StripeElements | null = null;
 
+  cartItems: CartItem[] = [];
+
   constructor(
     private readonly router: Router,
     private readonly orderService: OrderService,
-    private readonly stripeService: StripeService
+    private readonly stripeService: StripeService,
+    private readonly productService: ProductService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -53,6 +60,8 @@ export class PaymentComponent implements OnInit {
 
     this.order =
       state?.['order'];
+
+    this.cartItems = state?.['cartItems'];
 
     if (!this.clientSecret || !this.paymentIntentId) {
       this.router.navigate(['/dashboard']);
@@ -204,14 +213,42 @@ export class PaymentComponent implements OnInit {
 
           console.log('Order Created', response);
 
-          this.router.navigate(
-            ['/payment/success'],
-            {
-              state: {
-                order: response
-              }
-            });
+          const requests = this.cartItems.map(item => {
 
+            const updatedProduct: Product = {
+              productId: item.productId,
+              name: item.name,
+              description: '',
+              price: item.price,
+              stockQuantity: item.stockQuantity - item.quantity
+            };
+
+            return this.productService.updateProduct(item.productId, updatedProduct);
+
+          });
+
+          forkJoin(requests).subscribe({
+
+            next: () => {
+
+              this.router.navigate(
+                ['/payment/success'],
+                {
+                  state: {
+                    order: response
+                  }
+                });
+
+            },
+
+            error: error => {
+
+              console.error(error);
+              this.router.navigate(['/payment/failed']);
+
+            }
+
+          });
         },
 
         error: error => {

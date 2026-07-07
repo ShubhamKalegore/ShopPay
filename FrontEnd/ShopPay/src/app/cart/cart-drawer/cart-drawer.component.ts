@@ -19,7 +19,6 @@ export class CartDrawerComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   isAddressDialogOpen = false;
 
-
   cartItems: CartItem[] = [];
 
   isAddressPresent = false;
@@ -37,6 +36,7 @@ export class CartDrawerComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(items => {
+      debugger
       this.cartItems = items;
     });
 
@@ -176,7 +176,8 @@ export class CartDrawerComponent implements OnInit {
                     quantity: item.quantity,
                     unitPrice: item.price
                   }))
-                }
+                },
+                cartItems: this.cartItems
               }
             }
           );
