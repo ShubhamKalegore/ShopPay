@@ -17,6 +17,9 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   isProductDialogOpen = false;
 
+  selectedProduct: Product | null = null;
+  isEditMode = false;
+
   constructor(
     private productService: ProductService,
     private cartService: CartService
@@ -53,20 +56,23 @@ export class ProductListComponent implements OnInit {
   }
 
   openProductDialog(): void {
+    this.selectedProduct = null;
+    this.isEditMode = false;
     this.isProductDialogOpen = true;
   }
 
+  editProduct(product: Product): void {
+  this.selectedProduct = { ...product };
+  this.isEditMode = true;
+  this.isProductDialogOpen = true;
+  }
   closeProductDialog(): void {
     this.isProductDialogOpen = false;
+    this.selectedProduct = null;
+    this.isEditMode = false;
   }
 
   saveProduct(product: Product): void {
-
-    this.products = [
-      product,
-      ...this.products
-    ];
-
     this.closeProductDialog();
     this.loadProducts();
 

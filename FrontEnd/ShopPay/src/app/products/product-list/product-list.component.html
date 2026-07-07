@@ -22,15 +22,30 @@
 
         <div class="bg-white rounded-lg shadow border p-4 hover:shadow-lg transition">
 
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-lg font-semibold truncate">
-                    {{ product.name }}
-                </h2>
+        <div class="flex items-center justify-between mb-3">
+
+            <h2 class="text-lg font-semibold truncate">
+                {{ product.name }}
+            </h2>
+
+            <div class="flex items-center gap-2">
 
                 <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">
                     Stock: {{ product.stockQuantity }}
                 </span>
+
+                <button
+                    type="button"
+                    (click)="editProduct(product)"
+                    class="text-blue-600 hover:text-blue-800">
+
+                    ✏️
+
+                </button>
+
             </div>
+
+        </div>
 
             <p class="text-sm text-gray-600 h-12 overflow-hidden">
                 {{ product.description }}
@@ -87,9 +102,11 @@
 
       <div class="p-6 overflow-y-auto">
 
-        <app-product-info
+      <app-product-info
+          [product]="selectedProduct"
+          [isEditMode]="isEditMode"
           (saveProduct)="saveProduct($event)">
-        </app-product-info>
+      </app-product-info>
 
       </div>
 

@@ -124,7 +124,7 @@
             [ngClass]="{ 'loading': isSubmitting }">
 
             <span *ngIf="!isSubmitting">
-                Add Product
+                {{ isEditMode ? 'Edit Product' : 'Add Product' }}
             </span>
 
             <span *ngIf="isSubmitting">
