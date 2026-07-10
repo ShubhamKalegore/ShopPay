@@ -1,34 +1,50 @@
 # ShopPay
 
-ShopPay is a modern E-Commerce web application built using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, and **Stripe**. The project follows secure authentication practices using **JWT with HttpOnly Cookies**, supports complete user and address management and integrates secure payment processing using Stripe Payment Intents. The application follows a modern payment architecture and is being extended with payment verification, webhooks, billing, invoices, and subscriptions.
+ShopPay is a modern Full Stack E-Commerce application built using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, and **Stripe**. The project demonstrates secure authentication, order management, payment processing, and a scalable layered architecture following industry best practices.
+
+The application uses **JWT Authentication with HttpOnly Cookies**, **Refresh Tokens**, **Entity Framework Core**, and **Stripe Payment Intents** to provide a secure checkout experience.
 
 ---
 
 # Tech Stack
 
 ## Backend
-- ASP.NET Core Web API
+
+- ASP.NET Core Web API (.NET)
 - Entity Framework Core
 - PostgreSQL
 - JWT Authentication
 - Refresh Tokens
 - HttpOnly Cookies
 - AutoMapper
+- Repository Pattern
+- Dependency Injection
+
+---
 
 ## Frontend
+
 - Angular
 - TypeScript
 - RxJS
 - Angular Router
-- HTTP Interceptors
 - Reactive Forms
+- HTTP Interceptors
+- Route Guards
+
+---
 
 ## Database
+
 - PostgreSQL
 
+---
+
 ## Payment Gateway
-Stripe Payment Intents
-Stripe Elements (In Progress)
+
+- Stripe Payment Intents
+- Stripe Elements
+- Payment Verification
 
 ---
 
@@ -39,13 +55,15 @@ Stripe Elements (In Progress)
 - User Registration
 - User Login
 - JWT Authentication
+- Refresh Tokens
+- Refresh Token Rotation
 - HttpOnly Cookie Authentication
-- Refresh Token Support
-- Refresh Token Database Storage
+- Cookie-Based Authorization
 - Automatic Token Refresh
-- Route Protection
-- Secure Logout
 - Authentication Validation Endpoint
+- Secure Logout
+- Protected Routes
+- Angular HTTP Interceptor
 
 ---
 
@@ -53,9 +71,10 @@ Stripe Elements (In Progress)
 
 - View Products
 - Product Details
-- Responsive Product Cards
+- Add Product
+- Update Product
 - Product Images
-- Product Price Display
+- Responsive Product Cards
 
 ---
 
@@ -74,17 +93,17 @@ Stripe Elements (In Progress)
 - Add Address
 - Update Address
 - Delete Address
-- Fetch User Addresses
-- Default Address Selection
-- Shipping Address Management
+- Get Address By User
+- Default Shipping Address
 
 ---
 
 ## Checkout Module
 
 - Checkout Summary
-- Selected Shipping Address
+- Shipping Address Selection
 - Order Preview
+- Secure Payment Flow
 
 ---
 
@@ -92,29 +111,28 @@ Stripe Elements (In Progress)
 
 - Create Order
 - Order Items
+- Order Summary
 - Order Confirmation
-- Order History (Planned)
 
 ---
 
-## Payment Module (Work In Progress)
+## Payment Module
 
 - Stripe Payment Intents
-- Secure Card Payment Flow
+- Secure Card Payments
+- Stripe Elements Integration
 - Client Secret Generation
+- Payment Confirmation
 - Payment Verification
-- Stripe Elements Integration (In Progress)
+- Payment Success Page
+- Payment Failed Page
 - Payment Status Tracking
-- Billing Module (Planned)
-- Invoice Generation (Planned)
-- Stripe Webhooks (Planned)
-- Subscription Support (Planned)
 
 ---
 
 # Database Entities
 
-The current backend consists of the following entities:
+Current Entities
 
 - Users
 - Products
@@ -122,10 +140,9 @@ The current backend consists of the following entities:
 - Orders
 - OrderItems
 
-Future entities:
+Future Entities
 
 - Payments
-- StripeCustomers
 - Billing
 - Invoices
 - Subscriptions
@@ -134,11 +151,11 @@ Future entities:
 
 # Authentication Flow
 
-```
+```text
 User Login
       │
       ▼
-ASP.NET Core validates credentials
+Credentials Validated
       │
       ▼
 JWT Access Token Generated
@@ -164,11 +181,46 @@ Protected APIs
 
 ---
 
+# Payment Flow
+
+```text
+User Checkout
+      │
+      ▼
+Create Order
+      │
+      ▼
+Create Stripe Payment Intent
+      │
+      ▼
+Return Client Secret
+      │
+      ▼
+Angular Stripe Elements
+      │
+      ▼
+Confirm Payment
+      │
+      ▼
+Stripe
+      │
+      ▼
+Payment Success / Failed
+      │
+      ▼
+Verify Payment Intent
+      │
+      ▼
+Display Final Payment Status
+```
+
+---
+
 # API Endpoints
 
 ## Authentication
 
-```
+```http
 POST   /api/users/register
 POST   /api/users/login
 POST   /api/users/refresh-token
@@ -180,16 +232,19 @@ GET    /api/users/validate
 
 ## Products
 
-```
+```http
 GET    /api/products
 GET    /api/products/{id}
+POST   /api/products
+PUT    /api/products/{id}
+DELETE /api/products/{id}
 ```
 
 ---
 
 ## Addresses
 
-```
+```http
 GET    /api/addresses/user/{userId}
 POST   /api/addresses
 PUT    /api/addresses/{id}
@@ -200,15 +255,20 @@ DELETE /api/addresses/{id}
 
 ## Orders
 
-```
+```http
 POST   /api/orders
 GET    /api/orders/{id}
+GET    /api/orders/user/{userId}
 ```
+
+---
 
 ## Stripe
 
+```http
 POST   /api/stripe/create-payment-intent
 GET    /api/stripe/verify/{paymentIntentId}
+```
 
 ---
 
@@ -216,19 +276,20 @@ GET    /api/stripe/verify/{paymentIntentId}
 
 - JWT Authentication
 - HttpOnly Cookies
+- Refresh Tokens
+- Refresh Token Rotation
 - Secure Cookies
 - SameSite Cookie Policy
-- Refresh Token Rotation
-- Cookie-Based Authentication
 - Route Guards
-- HTTP Interceptors
+- Angular HTTP Interceptors
+- Cookie-Based Authentication
 - Unauthorized Request Handling
 
 ---
 
 # Project Structure
 
-```
+```text
 ShopPay
 
 Backend
@@ -246,6 +307,7 @@ Backend
 Frontend
 │
 ├── Components
+├── Pages
 ├── Services
 ├── Guards
 ├── Interceptors
@@ -260,34 +322,59 @@ Frontend
 
 ## Completed
 
-- User Authentication
+### Authentication
+
+- User Registration
+- User Login
 - JWT Authentication
 - Refresh Tokens
 - HttpOnly Cookies
-- Angular Authentication Service
-- HTTP Interceptor
+- Cookie-Based Authentication
+- Authentication Validation
 - Route Guards
-- User Registration
-- User Login
-- Secure Logout
-- Product Listing
+- Angular HTTP Interceptor
+
+### Products
+
+- Product CRUD
+- Product Cards
 - Product Details
+- Product Update
+
+### Cart
+
+- Cart Management
+- Quantity Updates
+- Local Storage
+
+### Address
+
 - Address CRUD
-- Checkout UI
-- Order Entity
-- OrderItem Entity
+- User Address Retrieval
+- Default Address
+
+### Orders
+
+- Order Creation
+- Order Items
+- Checkout Integration
+
+### Payments
+
+- Stripe Payment Intents
+- Stripe Elements
+- Payment Confirmation
+- Payment Verification
+- Success Page
+- Failed Page
 
 ---
 
 ## In Progress
 
-- Stripe Payment Intents
-- Stripe Elements Integration
-- Payment Verification
-- Payment Success Flow
-- Payment Cancellation Flow
-- Order Confirmation
 - Payment Persistence
+- Order History
+- Payment History
 
 ---
 
@@ -298,32 +385,16 @@ Frontend
 - Invoice Generation
 - Subscription Management
 - Customer Portal
-- Order History
 - Order Tracking
 - Product Search
-- Product Categories
+- Categories
 - Wishlist
+- Coupons
 - Email Notifications
+- Inventory Management
 - Admin Dashboard
----
-
-# Future Database Schema
-
-Current Tables
-
-- Users
-- Products
-- Addresses
-- Orders
-- OrderItems
-
-Upcoming Tables
-
-- Payments
-- StripeCustomers
-- Billing
-- Invoices
-- Subscriptions
+- Azure Deployment
+- Docker Deployment
 
 ---
 
@@ -337,9 +408,9 @@ dotnet ef database update
 dotnet run
 ```
 
-Backend runs on:
+Backend
 
-```
+```text
 https://localhost:5001
 ```
 
@@ -352,30 +423,33 @@ npm install
 ng serve
 ```
 
-Frontend runs on:
+Frontend
 
-```
+```text
 http://localhost:4200
 ```
 
 ---
 
-# Future Enhancements
+# Future Roadmap
 
 - Stripe Webhooks
+- Payment Persistence
 - Billing & Invoicing
 - Subscription Billing
 - Customer Portal
 - Order Tracking
-- Email Notifications
-- Coupon System
 - Product Reviews
+- Coupons
 - Inventory Management
-- Docker Deployment
+- Docker
 - Azure Deployment
+- CI/CD Pipeline
+- Unit Testing
+- Integration Testing
 
 ---
 
 # License
 
-This project is built for learning modern Full Stack Development using **ASP.NET Core**, **Angular**, **PostgreSQL**, **JWT Authentication**, and **Stripe Payment Integration**.
+This project is built for learning and demonstrating modern Full Stack development using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, **JWT Authentication**, and **Stripe Payment Integration**, following industry-standard architecture and secure coding practices.
