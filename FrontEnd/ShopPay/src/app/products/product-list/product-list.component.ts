@@ -77,4 +77,8 @@ export class ProductListComponent implements OnInit {
     this.loadProducts();
 
   }
+
+  deleteProduct(productId: number): void {
+  // Call delete API here
+  }
 }

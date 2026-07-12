@@ -1,5 +1,8 @@
 <div class="p-6">
-    <div class="flex items-center justify-between gap-4 mb-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+
         <h1 class="text-3xl font-bold">
             Products
         </h1>
@@ -9,37 +12,113 @@
             (click)="openProductDialog()"
             class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg shadow transition">
 
-            <span class="text-xl leading-none">+</span>
+            <span class="text-xl">+</span>
 
             <span>Add Product</span>
 
         </button>
+
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <!-- Products -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
         @for(product of products; track product.productId) {
 
-        <div class="bg-white rounded-lg shadow border p-4 hover:shadow-lg transition">
+        <div
+            class="relative bg-white rounded-xl border border-gray-200 shadow hover:shadow-xl transition duration-300 overflow-hidden">
 
-        <div class="flex items-center justify-between mb-3">
+            <!-- Out Of Stock Ribbon -->
+            @if(isOutOfStock(product)) {
 
-            <h2 class="text-lg font-semibold truncate">
-                {{ product.name }}
-            </h2>
+            <div
+                class="absolute top-5 -left-12 rotate-[-40deg] bg-red-600 text-white text-[11px] font-bold px-12 py-1 uppercase shadow-md z-20">
 
-            <div class="flex items-center gap-2">
+                Out Of Stock
 
-                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">
-                    Stock: {{ product.stockQuantity }}
-                </span>
+            </div>
 
+            }
+
+            <div class="p-5" [class.opacity-60]="isOutOfStock(product)">
+
+                <!-- Product Name -->
+                <h2 class="text-xl font-semibold truncate mb-4">
+                    {{ product.name }}
+                </h2>
+
+                <!-- Stock + Actions -->
+                <div class="flex items-center justify-between mb-4">
+
+                    <span
+                        class="inline-flex items-center bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
+
+                        Stock: {{ product.stockQuantity }}
+
+                    </span>
+
+                    <div class="flex items-center gap-2">
+
+                        <!-- Edit -->
+                        <button
+                            type="button"
+                            (click)="editProduct(product)"
+                            title="Edit Product"
+                            class="w-9 h-9 rounded-full hover:bg-yellow-100 transition flex items-center justify-center text-lg">
+
+                            ✏️
+
+                        </button>
+
+                        <!-- Delete -->
+                        <button
+                            type="button"
+                            (click)="deleteProduct(product.productId)"
+                            title="Delete Product"
+                            class="w-9 h-9 rounded-full hover:bg-red-100 transition flex items-center justify-center text-lg">
+
+                            🗑️
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Description -->
+                <p class="text-sm text-gray-600 h-14 overflow-hidden leading-6 mb-5">
+
+                    {{ product.description }}
+
+                </p>
+
+                <!-- Price -->
+                <div class="mb-5">
+
+                    <span class="text-3xl font-bold text-green-600">
+
+                        ₹{{ product.price }}
+
+                    </span>
+
+                </div>
+
+                <!-- Add To Cart -->
                 <button
                     type="button"
-                    (click)="editProduct(product)"
-                    class="text-blue-600 hover:text-blue-800">
+                    (click)="addToCart(product)"
+                    [disabled]="isOutOfStock(product)"
+                    class="w-full py-3 rounded-lg font-semibold transition duration-300"
 
-                    ✏️
+                    [class.bg-green-600]="!isOutOfStock(product)"
+                    [class.hover:bg-green-700]="!isOutOfStock(product)"
+                    [class.text-white]="!isOutOfStock(product)"
+
+                    [class.bg-gray-300]="isOutOfStock(product)"
+                    [class.text-gray-600]="isOutOfStock(product)"
+                    [class.cursor-not-allowed]="isOutOfStock(product)">
+
+                    {{ isOutOfStock(product) ? 'Out Of Stock' : 'Add To Cart' }}
 
                 </button>
 
@@ -47,71 +126,58 @@
 
         </div>
 
-            <p class="text-sm text-gray-600 h-12 overflow-hidden">
-                {{ product.description }}
-            </p>
+        }
 
-            <div class="mt-4 flex items-center justify-between">
-                <span class="text-xl font-bold text-green-600">
-                    ₹{{ product.price }}
-                </span>
-            </div>
-            <button (click)="addToCart(product)" [disabled]="isOutOfStock(product)"
-                class="mt-4 w-full py-2 rounded-md transition" [class.bg-green-600]="!isOutOfStock(product)"
-                [class.hover:bg-green-700]="!isOutOfStock(product)" [class.text-white]="!isOutOfStock(product)"
-                [class.bg-gray-400]="isOutOfStock(product)" [class.cursor-not-allowed]="isOutOfStock(product)">
+    </div>
 
-                {{ isOutOfStock(product) ? 'Out Of Stock' : 'Add To Cart' }}
+</div>
+
+@if(isProductDialogOpen) {
+
+<div
+    class="fixed inset-0 bg-black/50 z-[100]"
+    (click)="closeProductDialog()">
+</div>
+
+<div class="fixed inset-0 flex items-center justify-center z-[101]">
+
+    <div
+        class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+        (click)="$event.stopPropagation()">
+
+        <!-- Dialog Header -->
+        <div class="flex items-center justify-between p-4 border-b">
+
+            <h2 class="text-xl font-semibold">
+
+                {{ isEditMode ? 'Edit Product' : 'Add Product' }}
+
+            </h2>
+
+            <button
+                (click)="closeProductDialog()"
+                class="text-2xl hover:text-red-600 transition">
+
+                ✕
 
             </button>
 
         </div>
 
-        }
+        <!-- Dialog Body -->
+        <div class="p-6 overflow-y-auto">
+
+            <app-product-info
+                [product]="selectedProduct"
+                [isEditMode]="isEditMode"
+                (saveProduct)="saveProduct($event)">
+
+            </app-product-info>
+
+        </div>
 
     </div>
+
 </div>
-
-@if(isProductDialogOpen) {
-
-  <div
-    class="fixed inset-0 bg-black/50 z-[100]"
-    (click)="closeProductDialog()">
-  </div>
-
-  <div
-    class="fixed inset-0 flex items-center justify-center z-[101]">
-
-    <div
-      class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
-      (click)="$event.stopPropagation()">
-
-      <div class="flex justify-between items-center p-4 border-b">
-
-        <h2 class="text-xl font-semibold">
-          Add Product
-        </h2>
-
-        <button
-          (click)="closeProductDialog()"
-          class="text-2xl">
-          ✕
-        </button>
-
-      </div>
-
-      <div class="p-6 overflow-y-auto">
-
-      <app-product-info
-          [product]="selectedProduct"
-          [isEditMode]="isEditMode"
-          (saveProduct)="saveProduct($event)">
-      </app-product-info>
-
-      </div>
-
-    </div>
-
-  </div>
 
 }
