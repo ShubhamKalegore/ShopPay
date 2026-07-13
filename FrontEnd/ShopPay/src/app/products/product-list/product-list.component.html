@@ -7,9 +7,7 @@
             Products
         </h1>
 
-        <button
-            type="button"
-            (click)="openProductDialog()"
+        <button type="button" (click)="openProductDialog()"
             class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg shadow transition">
 
             <span class="text-xl">+</span>
@@ -21,7 +19,7 @@
     </div>
 
     <!-- Products -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
 
         @for(product of products; track product.productId) {
 
@@ -30,58 +28,47 @@
 
             <!-- Out Of Stock Ribbon -->
             @if(isOutOfStock(product)) {
-
             <div
                 class="absolute top-5 -left-12 rotate-[-40deg] bg-red-600 text-white text-[11px] font-bold px-12 py-1 uppercase shadow-md z-20">
-
                 Out Of Stock
-
             </div>
-
             }
 
             <div class="p-5" [class.opacity-60]="isOutOfStock(product)">
 
-                <!-- Product Name -->
-                <h2 class="text-xl font-semibold truncate mb-4">
-                    {{ product.name }}
-                </h2>
+                <!-- Header -->
+                <div class="flex items-center gap-2 mb-4">
 
-                <!-- Stock + Actions -->
-                <div class="flex items-center justify-between mb-4">
+                    <!-- Product Name -->
+                    <h2 class="flex-1 min-w-0 text-lg font-semibold truncate" [title]="product.name">
 
+                        {{ product.name }}
+
+                    </h2>
+
+                    <!-- Stock -->
                     <span
-                        class="inline-flex items-center bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
+                        class="flex-shrink-0 bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full whitespace-nowrap">
 
                         Stock: {{ product.stockQuantity }}
 
                     </span>
 
-                    <div class="flex items-center gap-2">
+                    <!-- Edit -->
+                    <button type="button" (click)="editProduct(product)" title="Edit Product"
+                        class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-yellow-100 transition">
 
-                        <!-- Edit -->
-                        <button
-                            type="button"
-                            (click)="editProduct(product)"
-                            title="Edit Product"
-                            class="w-9 h-9 rounded-full hover:bg-yellow-100 transition flex items-center justify-center text-lg">
+                        ✏️
 
-                            ✏️
+                    </button>
 
-                        </button>
+                    <!-- Delete -->
+                    <button type="button" (click)="deleteProduct(product.productId)" title="Delete Product"
+                        class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-100 transition">
 
-                        <!-- Delete -->
-                        <button
-                            type="button"
-                            (click)="deleteProduct(product.productId)"
-                            title="Delete Product"
-                            class="w-9 h-9 rounded-full hover:bg-red-100 transition flex items-center justify-center text-lg">
+                        🗑️
 
-                            🗑️
-
-                        </button>
-
-                    </div>
+                    </button>
 
                 </div>
 
@@ -103,22 +90,13 @@
 
                 </div>
 
-                <!-- Add To Cart -->
-                <button
-                    type="button"
-                    (click)="addToCart(product)"
-                    [disabled]="isOutOfStock(product)"
-                    class="w-full py-3 rounded-lg font-semibold transition duration-300"
+                <button type="button" (click)="isOutOfStock(product) ? notifyMe(product) : addToCart(product)"
+                    class="w-full py-3 rounded-lg font-semibold transition" [class.bg-green-600]="!isOutOfStock(product)"
+                    [class.hover:bg-green-700]="!isOutOfStock(product)" [class.text-white]="!isOutOfStock(product)"
+                    [class.bg-blue-600]="isOutOfStock(product)" [class.hover:bg-blue-700]="isOutOfStock(product)"
+                    [class.text-white]="isOutOfStock(product)">
 
-                    [class.bg-green-600]="!isOutOfStock(product)"
-                    [class.hover:bg-green-700]="!isOutOfStock(product)"
-                    [class.text-white]="!isOutOfStock(product)"
-
-                    [class.bg-gray-300]="isOutOfStock(product)"
-                    [class.text-gray-600]="isOutOfStock(product)"
-                    [class.cursor-not-allowed]="isOutOfStock(product)">
-
-                    {{ isOutOfStock(product) ? 'Out Of Stock' : 'Add To Cart' }}
+                    {{ isOutOfStock(product) ? 'Notify Me' : 'Add To Cart' }}
 
                 </button>
 
@@ -134,15 +112,12 @@
 
 @if(isProductDialogOpen) {
 
-<div
-    class="fixed inset-0 bg-black/50 z-[100]"
-    (click)="closeProductDialog()">
+<div class="fixed inset-0 bg-black/50 z-[100]" (click)="closeProductDialog()">
 </div>
 
 <div class="fixed inset-0 flex items-center justify-center z-[101]">
 
-    <div
-        class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
         (click)="$event.stopPropagation()">
 
         <!-- Dialog Header -->
@@ -154,9 +129,7 @@
 
             </h2>
 
-            <button
-                (click)="closeProductDialog()"
-                class="text-2xl hover:text-red-600 transition">
+            <button (click)="closeProductDialog()" class="text-2xl hover:text-red-600 transition">
 
                 ✕
 
@@ -167,10 +140,7 @@
         <!-- Dialog Body -->
         <div class="p-6 overflow-y-auto">
 
-            <app-product-info
-                [product]="selectedProduct"
-                [isEditMode]="isEditMode"
-                (saveProduct)="saveProduct($event)">
+            <app-product-info [product]="selectedProduct" [isEditMode]="isEditMode" (saveProduct)="saveProduct($event)">
 
             </app-product-info>
 

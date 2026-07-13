@@ -81,4 +81,9 @@ export class ProductListComponent implements OnInit {
   deleteProduct(productId: number): void {
   // Call delete API here
   }
+
+  notifyMe(product: Product): void {
+    // TODO: Save notification request
+    console.log('Notify me for:', product.name);
+  }
 }

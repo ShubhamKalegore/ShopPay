@@ -36,7 +36,6 @@ export class CartDrawerComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(items => {
-      debugger
       this.cartItems = items;
     });
 
