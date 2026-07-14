@@ -5,16 +5,23 @@ import { CartItem } from '../../core/models/cart-item';
 import { AddressInfoComponent } from '../../auth/address-info/address-info.component';
 import { StripeService } from '../../core/services/stripe.service';
 import { Router } from '@angular/router';
-
+import confetti from 'canvas-confetti';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart-drawer',
   standalone: true,
-  imports: [CommonModule, AddressInfoComponent],
+  imports: [CommonModule, AddressInfoComponent, FormsModule],
   templateUrl: './cart-drawer.component.html',
   styleUrl: './cart-drawer.component.scss'
 })
 export class CartDrawerComponent implements OnInit {
+
+  // | Coupon  | Discount |
+  // | ------- | -------: |
+  // | SAVE10  |     ₹100 |
+  // | WELCOME |     ₹200 |
+  // | SHOPPAY |     ₹500 |
 
   @Output() close = new EventEmitter<void>();
   isAddressDialogOpen = false;
@@ -26,6 +33,11 @@ export class CartDrawerComponent implements OnInit {
 
   userData = localStorage.getItem('shopPayUser');
   user = this.userData ? JSON.parse(this.userData) : null;
+
+  couponCode = '';
+  appliedCoupon = '';
+  discount = 0;
+  isCouponExpanded = false;
 
   constructor(
     private cartService: CartService,
@@ -168,7 +180,7 @@ export class CartDrawerComponent implements OnInit {
                 paymentIntentId: response.paymentIntentId,
                 order: {
                   userId: this.user.userId,
-                  totalAmount: this.subtotal,
+                  totalAmount: this.subtotal - this.discount,
                   orderStatus: 'PENDING',
                   orderItems: this.cartItems.map(item => ({
                     productId: item.productId,
@@ -191,5 +203,68 @@ export class CartDrawerComponent implements OnInit {
 
       });
 
+  }
+
+  applyCoupon(): void {
+    // if (this.appliedCoupon) {
+    //   alert('Coupon has already been applied.');
+    //   return;
+    // }
+    const code = this.couponCode.trim().toUpperCase();
+
+    switch (code) {
+
+      case 'SAVE10':
+
+        this.appliedCoupon = code;
+        this.discount = 100;
+
+        this.launchConfetti();
+
+        break;
+
+      case 'WELCOME':
+
+        this.appliedCoupon = code;
+        this.discount = 200;
+
+        this.launchConfetti();
+
+        break;
+
+      case 'SHOPPAY':
+
+        this.appliedCoupon = code;
+        this.discount = 500;
+
+        this.launchConfetti();
+
+        break;
+
+      default:
+
+        alert('Invalid coupon code.');
+
+        this.appliedCoupon = '';
+        this.discount = 0;
+
+        break;
+
+    }
+
+  }
+
+  private launchConfetti(): void {
+
+    confetti({
+      particleCount: 180,
+      spread: 90,
+      origin: { y: 0.6 }
+    });
+
+  }
+
+  toggleCouponSection(): void {
+    this.isCouponExpanded = !this.isCouponExpanded;
   }
 }
