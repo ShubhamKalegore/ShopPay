@@ -1,3 +1,40 @@
+### Development Setup
+
+#### 1. Start the Stripe CLI
+
+Forward Stripe events to the local webhook endpoint:
+
+```bash
+stripe listen --forward-to https://localhost:<port>/api/stripe/webhook
+```
+
+Example output:
+
+```text
+Ready! You are using Stripe API Version [2026-03-25.dahlia].
+Your webhook signing secret is:
+whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+> **Note:** Every time `stripe listen` is started, Stripe CLI generates a new webhook signing secret. Update your local User Secrets with the newly generated `whsec_...` value before testing again.
+
+#### 2. Update the Webhook Secret
+
+Store the webhook signing secret in .NET User Secrets:
+
+```bash
+dotnet user-secrets set "Stripe:WebhookSecret" "whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+#### 3. Other Stripe Secrets
+
+Configure the remaining Stripe credentials using .NET User Secrets:
+
+```bash
+dotnet user-secrets set "Stripe:SecretKey" "sk_test_..."
+dotnet user-secrets set "Stripe:PublishableKey" "pk_test_..."
+```
+
 # ShopPay
 
 ShopPay is a modern Full Stack E-Commerce application built using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, and **Stripe**. The project demonstrates secure authentication, order management, payment processing, and a scalable layered architecture following industry best practices.
