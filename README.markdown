@@ -453,3 +453,42 @@ http://localhost:4200
 # License
 
 This project is built for learning and demonstrating modern Full Stack development using **ASP.NET Core Web API**, **Angular**, **PostgreSQL**, **JWT Authentication**, and **Stripe Payment Integration**, following industry-standard architecture and secure coding practices.
+
+
+
+## Stripe Webhook Integration
+
+Implemented secure server-side payment confirmation using **Stripe Webhooks** to ensure payment status is updated based on Stripe events rather than relying only on frontend verification.
+
+### Features
+- Integrated Stripe Webhook endpoint in ASP.NET Core.
+- Verified webhook signatures using the Stripe Webhook Secret.
+- Processed `payment_intent.succeeded` events.
+- Updated order/payment status only after receiving a valid webhook event from Stripe.
+- Added support for local webhook testing using the Stripe CLI.
+- Configured Stripe Secret Key, Publishable Key, and Webhook Secret through application configuration.
+- Improved payment reliability by preventing frontend-only payment confirmation.
+
+### Local Testing
+
+1. Start the ASP.NET Core API.
+2. Start the Stripe CLI and forward events:
+
+```bash
+stripe listen --forward-to https://localhost:<port>/api/stripe/webhook
+```
+
+3. Copy the generated webhook signing secret (`whsec_...`) into the application configuration.
+4. Complete a test payment using Stripe test cards.
+5. Verify that the webhook is received and the payment status is updated successfully.
+
+### Stripe Events Handled
+
+- `payment_intent.succeeded`
+
+### Benefits
+
+- Secure server-side payment verification.
+- Prevents client-side payment spoofing.
+- Reliable payment status synchronization.
+- Production-ready payment confirmation flow.
