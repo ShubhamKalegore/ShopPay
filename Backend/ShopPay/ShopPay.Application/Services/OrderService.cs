@@ -11,15 +11,18 @@ public class OrderService : IOrderService
     private readonly IOrderRepository _orderRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<OrderService> _logger;
+    private readonly IStripeService _stripeService;
 
     public OrderService(
         IOrderRepository orderRepository,
         IMapper mapper,
-        ILogger<OrderService> logger)
+        ILogger<OrderService> logger,
+        IStripeService stripeService)
     {
         _orderRepository = orderRepository;
         _mapper = mapper;
         _logger = logger;
+        _stripeService = stripeService;
     }
 
     public async Task<List<OrderDto>> GetAllOrdersAsync()
@@ -84,6 +87,23 @@ public class OrderService : IOrderService
         await _orderRepository.AddAsync(order);
         await _orderRepository.SaveChangesAsync();
 
+        await _stripeService.UpdatePaymentIntentOrderIdAsync(orderDto.StripePaymentIntentId, order.OrderId);
+
+        return _mapper.Map<OrderDto>(order);
+    }
+
+    public async Task<OrderDto> UpdateOrderPaymentStatus(int id, bool paymentStatus)
+    {
+        var order = await _orderRepository.GetByIdAsync(id);
+
+        if (order is null)
+            return null;
+
+        order.IsPaymentConfirmed = paymentStatus;
+
+        _orderRepository.Update(order);
+
+        await _orderRepository.SaveChangesAsync();
         return _mapper.Map<OrderDto>(order);
     }
 

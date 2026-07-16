@@ -21,4 +21,6 @@ public interface IOrderService
     Task DeleteOrderAsync(int id);
 
     Task<List<OrderDto>> GetOrdersByPaymentStatusAsync(bool isPaymentConfirmed);
+
+    Task<OrderDto> UpdateOrderPaymentStatus(int id, bool paymentStatus);
 }

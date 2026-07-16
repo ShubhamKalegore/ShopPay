@@ -23,6 +23,9 @@ public interface IStripeService
     /// </summary>
     /// <param name="paymentIntentId">Stripe Payment Intent Id.</param>
     /// <returns>Payment verification details.</returns>
-    Task<VerifyPaymentResponseDto> VerifyPaymentAsync(
-        string paymentIntentId);
+    Task<VerifyPaymentResponseDto> VerifyPaymentAsync(string paymentIntentId);
+
+    Task UpdatePaymentIntentOrderIdAsync(string paymentIntentId, int orderId);
+
+    Task<int?> GetOrderIdFromPaymentIntentAsync(string paymentIntentId);
 }

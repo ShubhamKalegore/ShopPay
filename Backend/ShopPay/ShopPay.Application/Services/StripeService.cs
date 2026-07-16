@@ -53,4 +53,37 @@ public class StripeService : IStripeService
             IsPaid = paymentIntent.Status == "succeeded"
         };
     }
+
+    public async Task UpdatePaymentIntentOrderIdAsync(string paymentIntentId,int orderId)
+    {
+        var service = new PaymentIntentService();
+
+        var paymentIntent = await service.GetAsync(paymentIntentId);
+
+        var options = new PaymentIntentUpdateOptions
+        {
+            Metadata = new Dictionary<string, string>
+        {
+            { "OrderId", orderId.ToString() }
+        }
+        };
+
+        await service.UpdateAsync(paymentIntent.Id, options);
+    }
+    public async Task<int?> GetOrderIdFromPaymentIntentAsync(string paymentIntentId)
+    {
+        var service = new PaymentIntentService();
+
+        var paymentIntent = await service.GetAsync(paymentIntentId);
+
+        if (paymentIntent.Metadata != null &&
+            paymentIntent.Metadata.TryGetValue("OrderId", out var orderId) &&
+            int.TryParse(orderId, out var parsedOrderId))
+        {
+            return parsedOrderId;
+        }
+
+        return null;
+    }
+
 }

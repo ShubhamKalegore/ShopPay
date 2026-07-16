@@ -11,12 +11,14 @@ public class StripeController : ControllerBase
 {
     private readonly IStripeService _stripeService;
     private readonly IConfiguration _configuration;
+    private readonly IOrderService _orderService;
 
     public StripeController(
-        IStripeService stripeService, IConfiguration configuration)
+        IStripeService stripeService, IConfiguration configuration, IOrderService orderService)
     {
         _stripeService = stripeService;
         _configuration = configuration;
+        _orderService = orderService;
     }
 
     [HttpPost("create-payment-intent")]
@@ -65,14 +67,22 @@ public class StripeController : ControllerBase
             switch (stripeEvent.Type)
             {
                 case EventTypes.PaymentIntentSucceeded:
+                    {
+                        if (stripeEvent.Data.Object is not PaymentIntent paymentIntent)
+                        {
+                            throw new Exception("PaymentIntent not found in Stripe event.");
+                        }
 
-                    var paymentIntent =
-                        stripeEvent.Data.Object as PaymentIntent;
+                        var orderId = await _stripeService.GetOrderIdFromPaymentIntentAsync(
+                            paymentIntent.Id ?? throw new Exception("PaymentIntent ID is missing."));
 
-                    Console.WriteLine(
-                        $"Payment Intent Id: {paymentIntent?.Id}");
+                        if(orderId != null)
+                        {
+                            await _orderService.UpdateOrderPaymentStatus((int)orderId, true);
+                        }
 
-                    break;
+                        break;
+                    }
 
                 case EventTypes.PaymentIntentPaymentFailed:
 
