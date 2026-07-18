@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.API", "ShopPay.API\ShopPay.API.csproj", "{4D4AE3BA-4026-4D86-8A60-16404301C0CD}"
 EndProject
@@ -11,10 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.Application", "Shop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.Infrastructure", "ShopPay.Infrastructure\ShopPay.Infrastructure.csproj", "{EA77F75B-A53F-4EA4-BBEB-DC421C5F91D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.McpServer", "ShopPay.McpServer\ShopPay.McpServer.csproj", "{D863A731-7C12-4CE0-8532-FEAE31024B48}"
+EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -72,5 +71,20 @@ Global
 		{EA77F75B-A53F-4EA4-BBEB-DC421C5F91D4}.Release|x64.Build.0 = Release|Any CPU
 		{EA77F75B-A53F-4EA4-BBEB-DC421C5F91D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{EA77F75B-A53F-4EA4-BBEB-DC421C5F91D4}.Release|x86.Build.0 = Release|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Debug|x64.Build.0 = Debug|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Debug|x86.Build.0 = Debug|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x64.ActiveCfg = Release|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x64.Build.0 = Release|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x86.ActiveCfg = Release|Any CPU
+		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
