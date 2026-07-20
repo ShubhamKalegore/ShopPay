@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.Infrastructure", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.McpServer", "ShopPay.McpServer\ShopPay.McpServer.csproj", "{D863A731-7C12-4CE0-8532-FEAE31024B48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopPay.AI", "ShopPay.AI\ShopPay.AI.csproj", "{0D912E8A-A3B5-4363-AA4D-7DDB91925539}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x64.Build.0 = Release|Any CPU
 		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x86.ActiveCfg = Release|Any CPU
 		{D863A731-7C12-4CE0-8532-FEAE31024B48}.Release|x86.Build.0 = Release|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Debug|x64.Build.0 = Debug|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Debug|x86.Build.0 = Debug|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Release|x64.ActiveCfg = Release|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Release|x64.Build.0 = Release|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Release|x86.ActiveCfg = Release|Any CPU
+		{0D912E8A-A3B5-4363-AA4D-7DDB91925539}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
