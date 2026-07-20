@@ -8,13 +8,14 @@ using ShopPay.McpServer.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services
     .AddMcpServer()
     .WithHttpTransport()
-    .WithTools<ProductTools>();
+    .WithTools<ProductTools>()
+    .WithTools<OrderTools>()
+    .WithTools<AddressTools>();
 
-builder.Services.AddSingleton<ProductTools>();
+//builder.Services.AddSingleton<ProductTools>();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);

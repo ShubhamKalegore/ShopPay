@@ -27,4 +27,34 @@ public class ProductTools
     {
         return await _productService.GetAllProductsAsync();
     }
+
+    [McpServerTool]
+    [Description("Returns a product by its ID.")]
+    public async Task<ProductDto?> GetProduct(int id)
+    {
+        return await _productService.GetProductByIdAsync(id);
+    }
+
+    [McpServerTool]
+    [Description("Creates a new product.")]
+    public async Task<ProductDto> CreateProduct(ProductDto productDto)
+    {
+        return await _productService.CreateProductAsync(productDto);
+    }
+
+    [McpServerTool]
+    [Description("Updates an existing product.")]
+    public async Task<ProductDto?> UpdateProduct(
+    int id,
+    ProductDto productDto)
+    {
+        return await _productService.UpdateProductAsync(id, productDto);
+    }
+
+    [McpServerTool]
+    [Description("Deletes a product by its ID.")]
+    public async Task DeleteProduct(int id)
+    {
+        await _productService.DeleteProductAsync(id);
+    }
 }  
