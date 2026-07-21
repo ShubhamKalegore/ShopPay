@@ -1,7 +1,6 @@
 ﻿using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
-using System.Text.Json;
-
+using ShopPay.AI.Services;
 
 var transportOptions = new HttpClientTransportOptions
 {
@@ -12,20 +11,46 @@ var transport = new HttpClientTransport(transportOptions);
 
 var client = await McpClient.CreateAsync(transport);
 
-Console.WriteLine("Connected successfully.");
-
 var tools = await client.ListToolsAsync();
 
+Console.WriteLine("Connected to MCP Server.");
+
+Console.WriteLine("\nAvailable Tools:");
 foreach (var tool in tools)
 {
     Console.WriteLine($"{tool.Name} - {tool.Description}");
 }
 
+var ollama = new OllamaService();
 
-var result = await client.CallToolAsync("get_products");
+while (true)
+{
+    Console.Write("\nYou: ");
 
-Console.WriteLine($"IsError: {result.IsError}");
+    var prompt = Console.ReadLine();
 
-var text = ((TextContentBlock)result.Content.First()).Text;
+    if (string.IsNullOrWhiteSpace(prompt))
+        continue;
 
-Console.WriteLine(text);
+    if (prompt.Equals("exit", StringComparison.OrdinalIgnoreCase))
+        break;
+
+    var response = await ollama.ChatAsync(prompt, tools);
+
+    Console.WriteLine($"\nOllama Response: {response}");
+
+    if (response.StartsWith("TOOL:"))
+    {
+        var toolName = response.Replace("TOOL:", "").Trim();
+
+        var toolResult = await client.CallToolAsync(toolName);
+
+        var text = ((TextContentBlock)toolResult.Content.First()).Text;
+
+        Console.WriteLine($"\nTool Result:\n{text}");
+    }
+    else
+    {
+        Console.WriteLine($"\nAI: {response}");
+    }
+}
