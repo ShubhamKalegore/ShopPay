@@ -105,3 +105,94 @@
   </div>
 
 }
+
+<!-- Floating AI Button ✨ -->
+<button
+  class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl flex items-center justify-center font-bold text-lg transition-all duration-200 hover:scale-105"
+  (click)="toggleAiChat()"
+  aria-label="Open AI Assistant">
+
+  AI
+
+</button>
+@if(isAiChatOpen){
+
+  <!-- Overlay -->
+  <div
+    class="fixed inset-0 bg-black/30 z-40"
+    (click)="closeAiChat()">
+  </div>
+
+  <!-- Chat Window -->
+  <div
+    class="fixed bottom-24 right-6 z-50 w-[380px] h-[550px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3 border-b">
+
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🤖</span>
+        <div>
+          <h3 class="font-semibold">ShopPay AI</h3>
+          <p class="text-xs text-gray-500">
+            Powered by MCP
+          </p>
+        </div>
+      </div>
+
+      <button
+        class="text-gray-500 hover:text-black text-xl"
+        (click)="closeAiChat()">
+        ✕
+      </button>
+
+    </div>
+
+    <!-- Messages -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-3">
+
+      <!-- AI -->
+      <div class="flex">
+        <div class="max-w-[80%] rounded-xl bg-gray-100 px-3 py-2 text-sm">
+          👋 Hi! I'm your ShopPay AI Assistant.
+        </div>
+      </div>
+
+      <!-- User -->
+      <div class="flex justify-end">
+        <div class="max-w-[80%] rounded-xl bg-blue-600 text-white px-3 py-2 text-sm">
+          Show my latest orders
+        </div>
+      </div>
+
+      <!-- AI -->
+      <div class="flex">
+        <div class="max-w-[80%] rounded-xl bg-gray-100 px-3 py-2 text-sm">
+          Sure! I can help with your orders, products, customers and more.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t p-3">
+
+      <div class="flex gap-2">
+
+        <input
+          type="text"
+          placeholder="Ask ShopPay AI..."
+          class="flex-1 rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"/>
+
+        <button
+          class="rounded-lg bg-blue-600 px-4 text-white hover:bg-blue-700">
+          Send
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

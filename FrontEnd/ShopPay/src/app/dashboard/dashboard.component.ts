@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
   private cartSubscription?: Subscription;
   isCartOpen = false;
   isProfileOpen = false;
+  isAiChatOpen = false;
 
   constructor(
     private router: Router,
@@ -43,6 +44,15 @@ export class DashboardComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void {
     this.cartSubscription?.unsubscribe();
+  }
+
+
+  toggleAiChat(): void {
+    this.isAiChatOpen = !this.isAiChatOpen;
+  }
+
+  closeAiChat(): void {
+    this.isAiChatOpen = false;
   }
 
   get displayName() {
