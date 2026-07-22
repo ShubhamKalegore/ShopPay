@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using ShopPay.AI.Api.Interfaces;
 using ShopPay.AI.Api.Services;
 using Microsoft.AspNetCore.Hosting;
+using ShopPay.AI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IAIService, OllamaService>();
-builder.Services.AddScoped<ChatService>();
 
 // Create MCP Client once
 var transportOptions = new HttpClientTransportOptions
@@ -44,9 +43,11 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowCredentials();
     });
-}); 
+});
 
-
+builder.Services.Configure<AzureOpenAISettings>(
+    builder.Configuration.GetSection("AzureOpenAI"));
+builder.Services.AddScoped<AzureOpenAIService>();
 var app = builder.Build();
 
 

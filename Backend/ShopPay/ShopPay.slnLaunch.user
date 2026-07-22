@@ -3,15 +3,15 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "ShopPay.API\\ShopPay.API.csproj",
-        "Action": "Start"
-      },
-      {
         "Path": "ShopPay.McpServer\\ShopPay.McpServer.csproj",
         "Action": "Start"
       },
       {
         "Path": "ShopPay.AI\\ShopPay.AI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ShopPay.API\\ShopPay.API.csproj",
         "Action": "Start"
       }
     ]
