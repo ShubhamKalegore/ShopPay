@@ -6,10 +6,18 @@ import { AuthService } from '../core/services/auth.service';
 import { CartService } from '../core/services/cart.service';
 import { Subscription } from 'rxjs';
 import { CartDrawerComponent } from '../cart/cart-drawer/cart-drawer.component';
+import { AiService } from '../core/services/ai.service';
+import { ChatMessage } from '../core/models/chat-message';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, CartDrawerComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, CartDrawerComponent,
+        FormsModule,
+        RouterLink,
+        RouterLinkActive,
+        RouterOutlet,
+        CartDrawerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -22,11 +30,24 @@ export class DashboardComponent implements OnInit, OnDestroy{
   isProfileOpen = false;
   isAiChatOpen = false;
 
+  messages: ChatMessage[] = [
+    {
+      sender: 'ai',
+      message: "👋 Hi! I'm your ShopPay AI Assistant.",
+      timestamp: new Date()
+    }
+  ];
+
+  currentMessage = '';
+
+  isSending = false;
+
   constructor(
     private router: Router,
     @Inject(PLATFORM_ID) platformId: object,
     private authService: AuthService,
-    private cartService: CartService
+    private cartService: CartService,
+    private aiService: AiService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.user = this.getUser();
@@ -110,5 +131,48 @@ export class DashboardComponent implements OnInit, OnDestroy{
 
   closeCart(): void {
     this.isCartOpen = false;
+  }
+
+  sendMessage(): void {
+debugger
+    const message = this.currentMessage.trim();
+
+    if (!message || this.isSending) {
+      return;
+    }
+
+    this.messages.push({
+      sender: 'user',
+      message,
+      timestamp: new Date()
+    });
+
+    this.currentMessage = '';
+
+    this.isSending = true;
+
+    this.aiService.sendMessage(message)
+      .subscribe({
+        next: (response) => {
+
+          this.messages.push({
+            sender: 'ai',
+            message: response.message,
+            timestamp: new Date()
+          });
+
+          this.isSending = false;
+        },
+        error: () => {
+
+          this.messages.push({
+            sender: 'ai',
+            message: 'Something went wrong. Please try again.',
+            timestamp: new Date()
+          });
+
+          this.isSending = false;
+        }
+      });
   }
 }

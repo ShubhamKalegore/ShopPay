@@ -1,12 +1,11 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using ModelContextProtocol.Client;
-using System.Net.Http.Json;
-using System.Text.Json;
+using ShopPay.AI.Api.Interfaces;
 
-namespace ShopPay.AI.Services;
+namespace ShopPay.AI.Api.Services;
 
-public class OllamaService
+public class OllamaService : IAIService
 {
     private readonly HttpClient _httpClient;
 
@@ -74,6 +73,60 @@ public class OllamaService
         response.EnsureSuccessStatusCode();
 
         using var json = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+
+        return json.RootElement
+            .GetProperty("message")
+            .GetProperty("content")
+            .GetString()!;
+    }
+
+    public async Task<string> GenerateFinalResponseAsync(
+    string userPrompt,
+    string toolResult)
+    {
+        var request = new
+        {
+            model = "llama3.1",
+            stream = false,
+            messages = new object[]
+            {
+            new
+            {
+                role = "system",
+                content = """
+                You are a helpful AI assistant.
+
+                A tool has already been executed.
+
+                Your job is to answer the user's question using ONLY the tool result.
+
+                Never mention tools.
+                Never mention JSON.
+                Present the information naturally.
+                """
+            },
+            new
+            {
+                role = "user",
+                content = $"""
+                User Question:
+                {userPrompt}
+
+                Tool Result:
+                {toolResult}
+
+                Answer the user's question in a clear and friendly way.
+                """
+            }
+            }
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("/api/chat", request);
+
+        response.EnsureSuccessStatusCode();
+
+        using var json = await JsonDocument.ParseAsync(
+            await response.Content.ReadAsStreamAsync());
 
         return json.RootElement
             .GetProperty("message")

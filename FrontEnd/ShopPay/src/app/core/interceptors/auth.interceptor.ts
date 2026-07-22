@@ -14,6 +14,10 @@ export const authInterceptor: HttpInterceptorFn = (
 
   const authService = inject(AuthService);
 
+  if (req.url.includes('http://localhost:7000/api/chat')) {
+    return next(req);
+  }
+
   const clonedRequest = req.clone({
     withCredentials: true
   });

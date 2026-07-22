@@ -1,4 +1,66 @@
 ﻿using ModelContextProtocol.Client;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using ShopPay.AI.Api.Interfaces;
+using ShopPay.AI.Api.Services;
+using Microsoft.AspNetCore.Hosting;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseUrls(
+    "http://localhost:7000",
+    "https://localhost:7001");
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IAIService, OllamaService>();
+builder.Services.AddScoped<ChatService>();
+
+// Create MCP Client once
+var transportOptions = new HttpClientTransportOptions
+{
+    Endpoint = new Uri("http://localhost:5000")
+};
+
+var transport = new HttpClientTransport(transportOptions);
+
+var client = await McpClient.CreateAsync(transport);
+
+var tools = await client.ListToolsAsync();
+
+builder.Services.AddSingleton(client);
+builder.Services.AddSingleton<IReadOnlyList<McpClientTool>>(tools.AsReadOnly());
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+}); 
+
+
+var app = builder.Build();
+
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+app.UseCors("Angular"); 
+
+app.MapControllers();
+
+app.Run();
+
+
+/*using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
 using ShopPay.AI.Services;
 
@@ -53,4 +115,4 @@ while (true)
     {
         Console.WriteLine($"\nAI: {response}");
     }
-}
+}*/
