@@ -10,10 +10,7 @@ public class ChatService
     private readonly McpClient _client;
     private readonly IReadOnlyList<McpClientTool> _tools;
 
-    public ChatService(
-        IAIService aiService,
-        McpClient client,
-        IReadOnlyList<McpClientTool> tools)
+    public ChatService(IAIService aiService, McpClient client, IReadOnlyList<McpClientTool> tools)
     {
         _aiService = aiService;
         _client = client;

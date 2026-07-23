@@ -38,12 +38,5 @@ public class ChatController : ControllerBase
             Message = response
         });
     }
-
-    //[HttpGet("test")]
-    //public async Task<IActionResult> Test()
-    //{
-    //    var response = await _azureOpenAIService.ChatAsync("Hello");
-    //    return Ok(response);
-    //}
 }
 
