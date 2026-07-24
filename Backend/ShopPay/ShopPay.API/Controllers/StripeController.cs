@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopPay.Application.DTOs.Stripe;
 using ShopPay.Application.Interfaces;
+using ShopPay.Application.Services;
 using Stripe;
 
 namespace ShopPay.API.Controllers;
@@ -12,13 +13,15 @@ public class StripeController : ControllerBase
     private readonly IStripeService _stripeService;
     private readonly IConfiguration _configuration;
     private readonly IOrderService _orderService;
+    private readonly IEmailService _emailService;
 
     public StripeController(
-        IStripeService stripeService, IConfiguration configuration, IOrderService orderService)
+        IStripeService stripeService, IConfiguration configuration, IOrderService orderService, IEmailService emailService)
     {
         _stripeService = stripeService;
         _configuration = configuration;
         _orderService = orderService;
+        _emailService = emailService;
     }
 
     [HttpPost("create-payment-intent")]
@@ -80,6 +83,19 @@ public class StripeController : ControllerBase
                         {
                             await _orderService.UpdateOrderPaymentStatus((int)orderId, true);
                         }
+
+                        await _emailService.SendEmailAsync(
+                            "shubhamkalegore87@gmail.com",
+                            "Thank You for Your Purchase!",
+                            @"
+                            <h2>Thank You for Your Purchase!</h2>
+                            <p>We appreciate you shopping with <strong>ShopPay</strong>.</p>
+                            <p>Your order has been received successfully and is being processed.</p>
+                            <p>We'll notify you once your order has been shipped.</p>
+                            <br/>
+                            <p>Thank you for choosing ShopPay. We look forward to serving you again!</p>
+                            "
+                        );
 
                         break;
                     }
