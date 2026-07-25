@@ -33,4 +33,10 @@
 		<ProjectReference Include="..\ShopPay.Infrastructure\ShopPay.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Templates\OrderConfirmation.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
