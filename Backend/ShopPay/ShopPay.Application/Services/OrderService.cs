@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ShopPay.Application.DTOs;
 using ShopPay.Application.Interfaces;
 using ShopPay.Domain.Entities;
+using ShopPay.Domain.Enums;
 using Stripe;
 
 namespace ShopPay.Application.Services;
@@ -66,9 +67,7 @@ public class OrderService : IOrderService
             ShippingAddressId = orderDto.ShippingAddressId,
             BillingAddressId = orderDto.BillingAddressId,
             TotalAmount = orderDto.TotalAmount,
-            OrderStatus = string.IsNullOrWhiteSpace(orderDto.OrderStatus)
-                ? "PENDING"
-                : orderDto.OrderStatus,
+            OrderStatus = orderDto.OrderStatus,
 
             IsPaymentConfirmed = false,
 
@@ -101,7 +100,7 @@ public class OrderService : IOrderService
             return null;
 
         order.IsPaymentConfirmed = paymentStatus;
-        order.OrderStatus = paymentStatus ? "CONFIRMED" : "PAYMENT_FAILED";
+        order.OrderStatus = paymentStatus ? OrderStatus.Confirmed : OrderStatus.PaymentFailed;
 
         _orderRepository.Update(order);
 

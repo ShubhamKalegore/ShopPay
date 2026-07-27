@@ -101,21 +101,23 @@ public class StripeController : ControllerBase
                     }
 
                 case EventTypes.PaymentIntentPaymentFailed:
-
-                    if (stripeEvent.Data.Object is not PaymentIntent paymentIntent)
                     {
-                        throw new Exception("PaymentIntent not found in Stripe event.");
+
+                        if (stripeEvent.Data.Object is not PaymentIntent paymentIntent)
+                        {
+                            throw new Exception("PaymentIntent not found in Stripe event.");
+                        }
+
+                        var failedPaymentIntent =
+                            stripeEvent.Data.Object as PaymentIntent;
+
+                        if (paymentIntent.Id != null)
+                        {
+                            await _orderService.UpdateOrderPaymentStatus(paymentIntent.Id, false);
+                        }
+
+                        break;
                     }
-
-                    var failedPaymentIntent =
-                        stripeEvent.Data.Object as PaymentIntent;
-
-                    if (paymentIntent.Id != null)
-                    {
-                        await _orderService.UpdateOrderPaymentStatus(paymentIntent.Id, false);
-                    }
-
-                    break;
 
                 default:
 

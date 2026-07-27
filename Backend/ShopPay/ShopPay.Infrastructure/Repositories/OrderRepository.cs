@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopPay.Application.Interfaces;
 using ShopPay.Domain.Entities;
+using ShopPay.Domain.Enums;
 using ShopPay.Infrastructure.Data;
 
 namespace ShopPay.Infrastructure.Repositories;
@@ -28,7 +29,7 @@ public class OrderRepository: GenericRepository<Order, int>, IOrderRepository
         return await _context.Orders.FirstOrDefaultAsync(o =>
             o.StripePaymentIntentId == paymentIntentId &&
             !o.IsPaymentConfirmed &&
-            o.OrderStatus == "PENDING");
+            o.OrderStatus == OrderStatus.Pending);
     }
 
     public async Task<List<Order>> GetAllOrdersAsync()

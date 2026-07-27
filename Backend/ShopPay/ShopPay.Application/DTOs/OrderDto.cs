@@ -1,4 +1,6 @@
-﻿namespace ShopPay.Application.DTOs;
+﻿using ShopPay.Domain.Enums;
+
+namespace ShopPay.Application.DTOs;
 
 public class OrderDto
 {
@@ -12,7 +14,7 @@ public class OrderDto
 
     public decimal TotalAmount { get; set; }
 
-    public string OrderStatus { get; set; } = string.Empty;
+    public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
 
     public bool IsPaymentConfirmed { get; set; }
 

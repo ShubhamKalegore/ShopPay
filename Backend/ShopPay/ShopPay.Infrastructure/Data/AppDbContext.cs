@@ -47,6 +47,10 @@ public class AppDbContext : DbContext
             .WithMany(x => x.Invoices)
             .HasForeignKey(x => x.SubscriptionId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Order>()
+            .Property(o => o.OrderStatus)
+            .HasConversion<string>();
     }
 }
 

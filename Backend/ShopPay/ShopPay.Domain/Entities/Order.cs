@@ -1,6 +1,7 @@
 ﻿using ShopPay.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using ShopPay.Domain.Enums;
 
 [Table("orders")]
 public class Order
@@ -30,7 +31,7 @@ public class Order
 
 
     [Column("order_status")]
-    public string OrderStatus { get; set; } = "PENDING";
+    public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
