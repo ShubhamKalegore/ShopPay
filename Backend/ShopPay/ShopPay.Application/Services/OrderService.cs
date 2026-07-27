@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ShopPay.Application.DTOs;
 using ShopPay.Application.Interfaces;
 using ShopPay.Domain.Entities;
+using Stripe;
 
 namespace ShopPay.Application.Services;
 
@@ -92,14 +93,15 @@ public class OrderService : IOrderService
         return _mapper.Map<OrderDto>(order);
     }
 
-    public async Task<OrderDto> UpdateOrderPaymentStatus(int id, bool paymentStatus)
+    public async Task<OrderDto> UpdateOrderPaymentStatus(string paymentIntentId, bool paymentStatus)
     {
-        var order = await _orderRepository.GetByIdAsync(id);
+        var order = await _orderRepository.GetOrderByPaymentIntentIdAsync(paymentIntentId);
 
         if (order is null)
             return null;
 
         order.IsPaymentConfirmed = paymentStatus;
+        order.OrderStatus = paymentStatus ? "CONFIRMED" : "PAYMENT_FAILED";
 
         _orderRepository.Update(order);
 

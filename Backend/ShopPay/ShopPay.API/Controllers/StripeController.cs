@@ -76,12 +76,12 @@ public class StripeController : ControllerBase
                             throw new Exception("PaymentIntent not found in Stripe event.");
                         }
 
-                        var orderId = await _stripeService.GetOrderIdFromPaymentIntentAsync(
-                            paymentIntent.Id ?? throw new Exception("PaymentIntent ID is missing."));
+                        //var orderId = await _stripeService.GetOrderIdFromPaymentIntentAsync(
+                           // paymentIntent.Id ?? throw new Exception("PaymentIntent ID is missing."));
 
-                        if(orderId != null)
+                        if(paymentIntent.Id != null)
                         {
-                            await _orderService.UpdateOrderPaymentStatus((int)orderId, true);
+                            await _orderService.UpdateOrderPaymentStatus(paymentIntent.Id, true);
                         }
 
                         await _emailService.SendEmailAsync(
@@ -102,8 +102,18 @@ public class StripeController : ControllerBase
 
                 case EventTypes.PaymentIntentPaymentFailed:
 
+                    if (stripeEvent.Data.Object is not PaymentIntent paymentIntent)
+                    {
+                        throw new Exception("PaymentIntent not found in Stripe event.");
+                    }
+
                     var failedPaymentIntent =
                         stripeEvent.Data.Object as PaymentIntent;
+
+                    if (paymentIntent.Id != null)
+                    {
+                        await _orderService.UpdateOrderPaymentStatus(paymentIntent.Id, false);
+                    }
 
                     break;
 

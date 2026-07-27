@@ -13,4 +13,6 @@ public interface IOrderRepository : IGenericRepository<Order, int>
     Task<List<Order>> GetOrdersByPaymentStatusAsync(bool isPaymentConfirmed);
 
     Task<List<Order>> GetAllOrdersAsync();
+
+    Task<Order?> GetOrderByPaymentIntentIdAsync(string paymentIntentId);
 }

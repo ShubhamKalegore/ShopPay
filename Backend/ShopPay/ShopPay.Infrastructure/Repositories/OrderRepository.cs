@@ -23,6 +23,14 @@ public class OrderRepository: GenericRepository<Order, int>, IOrderRepository
             .ToListAsync();
     }
 
+    public async Task<Order?> GetOrderByPaymentIntentIdAsync(string paymentIntentId)
+    {
+        return await _context.Orders.FirstOrDefaultAsync(o =>
+            o.StripePaymentIntentId == paymentIntentId &&
+            !o.IsPaymentConfirmed &&
+            o.OrderStatus == "PENDING");
+    }
+
     public async Task<List<Order>> GetAllOrdersAsync()
     {
         return await _context.Orders

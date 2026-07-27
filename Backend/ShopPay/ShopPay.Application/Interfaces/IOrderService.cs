@@ -22,5 +22,5 @@ public interface IOrderService
 
     Task<List<OrderDto>> GetOrdersByPaymentStatusAsync(bool isPaymentConfirmed);
 
-    Task<OrderDto> UpdateOrderPaymentStatus(int id, bool paymentStatus);
+    Task<OrderDto> UpdateOrderPaymentStatus(string id, bool paymentStatus);
 }
